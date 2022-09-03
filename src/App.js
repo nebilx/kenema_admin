@@ -3,22 +3,29 @@ import "./App.css";
 import Sidebar from "./components/Sidebar/Sidebar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Overview from "./pages/Overview";
+
 import { Reports, ReportsOne, ReportsTwo, ReportsThree } from "./pages/Reports";
-import Team from "./pages/Team";
+
+import AddBatch from "./pages/AddBatch/AddBatch";
+import AddBranch from "./pages/AddBranch/AddBranch";
+import AddMedicine from "./pages/AddMedicine/AddMedicine";
+import AddPatient from "./pages/AddPatient/AddPatient";
 
 function App() {
   return (
-    <Router>
-      <Sidebar />
-      <Routes>
-        <Route path="/overview" exact component={Overview} />
-        <Route path="/reports" exact component={Reports} />
-        <Route path="/reports/reports1" exact component={ReportsOne} />
-        <Route path="/reports/reports2" exact component={ReportsTwo} />
-        <Route path="/reports/reports3" exact component={ReportsThree} />
-        <Route path="/team" exact component={Team} />
-      </Routes>
-    </Router>
+    <AddMedicine />
+
+    // <Router>
+    //   <Sidebar />
+    //   <Routes>
+    //     <Route path="/overview" exact component={Overview} />
+    //     <Route path="/reports" exact component={AddMedicine} />
+    //     <Route path="/reports/reports1" exact component={AddPatient} />
+    //     <Route path="/reports/reports2" exact component={AddBatch} />
+    //     <Route path="/reports/reports3" exact component={ReportsThree} />
+    //     <Route path="/team" exact component={AddBranch} />
+    //   </Routes>
+    // </Router>
   );
 }
 
