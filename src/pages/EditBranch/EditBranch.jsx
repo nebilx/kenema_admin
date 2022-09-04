@@ -1,4 +1,4 @@
-import "./AddBranch.css";
+import "./EditBranch.css";
 import axios from "axios";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -20,16 +20,16 @@ const [status,setStatus] = useState("");
     setIsLoading(true);
 
     try {
-      const response = await axios.post(
+      const response = await axios.put(
         "http://localhost:4000/branch",
-        JSON.stringify({ name, pno, address,status }),
+        JSON.stringify({id, name, pno, address,status }),
         {
           headers: { "Content-Type": "application/json" },
           Authorization: "Bearer " + localStorage.getItem("token"),
         }
       );
       setIsLoading(false);
-      setErrMsg("Added Successfully");
+      setErrMsg("Updated Successfully");
       console.log(JSON.stringify(response));
       //   navigate("/users?");
     } catch (err) {
@@ -42,7 +42,7 @@ const [status,setStatus] = useState("");
         setErrMsg("Missing ");
       } else {
         setIsLoading(false);
-        setErrMsg("adding User Failed");
+        setErrMsg("Updating Failed");
       }
     }
   };
@@ -58,7 +58,7 @@ const [status,setStatus] = useState("");
     <span className="loader" />
   ) : (
     <div className="container">
-      <div className="title">Add Branch</div>
+      <div className="title">Edit Branch</div>
       <br />
       <p
         ref={errRef}
@@ -109,7 +109,7 @@ const [status,setStatus] = useState("");
         </div>
 
         <div className="button">
-          <input type="submit" value="Add" />
+          <input type="submit" value="Update" />
         </div>
       </form>
     </div>

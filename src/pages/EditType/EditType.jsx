@@ -1,4 +1,4 @@
-import "./AddBranch.css";
+import "./EditType.css";
 import axios from "axios";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -6,10 +6,8 @@ import { useNavigate } from "react-router-dom";
 export default function NewBranch() {
   //   const navigate = useNavigate();
 
-  const [name, setName] = useState("");
-  const [pno, setPno] = useState("");
-  const [address, setAddress] = useState("");
-const [status,setStatus] = useState("");
+  const [Tname, setTname] = useState("");
+  const [status, setStatus] = useState("");
 
   const [errMsg, setErrMsg] = useState("");
   const errRef = useRef();
@@ -20,16 +18,16 @@ const [status,setStatus] = useState("");
     setIsLoading(true);
 
     try {
-      const response = await axios.post(
-        "http://localhost:4000/branch",
-        JSON.stringify({ name, pno, address,status }),
+      const response = await axios.put(
+        "http://localhost:4000/type",
+        JSON.stringify({ type_name:Tname,status }),
         {
           headers: { "Content-Type": "application/json" },
           Authorization: "Bearer " + localStorage.getItem("token"),
         }
       );
       setIsLoading(false);
-      setErrMsg("Added Successfully");
+      setErrMsg("Updated Successfully");
       console.log(JSON.stringify(response));
       //   navigate("/users?");
     } catch (err) {
@@ -42,7 +40,7 @@ const [status,setStatus] = useState("");
         setErrMsg("Missing ");
       } else {
         setIsLoading(false);
-        setErrMsg("adding User Failed");
+        setErrMsg("Updating Failed");
       }
     }
   };
@@ -58,7 +56,7 @@ const [status,setStatus] = useState("");
     <span className="loader" />
   ) : (
     <div className="container">
-      <div className="title">Add Branch</div>
+      <div className="title">Edit Type</div>
       <br />
       <p
         ref={errRef}
@@ -74,34 +72,17 @@ const [status,setStatus] = useState("");
             <span className="details">Name</span>
             <input
               type="text"
-              placeholder="enter name"
+              placeholder="enter Type name"
               required
-              onChange={(event) => setName(event.target.value)}
+              onChange={(event) => setTname(event.target.value)}
             />
           </div>
-          <div className="input-box">
-            <span className="details">Phone Number</span>
-            <input
-              type="number"
-              placeholder="enter Phone number"
-              required
-              onChange={(event) => setPno(event.target.value)}
-            />
-          </div>
-          <div className="input-box">
-            <span className="details">Address</span>
-            <input
-              type="text"
-              placeholder="enter Address"
-              required
-              onChange={(event) => setAddress(event.target.value)}
-            />
-          </div>
+        
           <div className="input-box">
             <span className="details">Status</span>
             <input
               type="text"
-              placeholder="enter Status"
+              placeholder="enter Address"
               required
               onChange={(event) => setStatus(event.target.value)}
             />
@@ -109,7 +90,7 @@ const [status,setStatus] = useState("");
         </div>
 
         <div className="button">
-          <input type="submit" value="Add" />
+          <input type="submit" value="Update" />
         </div>
       </form>
     </div>

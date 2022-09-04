@@ -34,19 +34,15 @@ export default function NewPatient() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
-    console.log(name, age, gender, dob, address, pno, image, uname, upwd);
-
     try {
       const response = await axios.post(
         "http://localhost:4000/patient",
-
+        bodyFormData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
-          bodyFormData,
         }
       );
       setIsLoading(false);

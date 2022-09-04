@@ -13,7 +13,7 @@ import AddPatient from "./pages/AddPatient/AddPatient";
 
 function App() {
   return (
-    <AddMedicine />
+    <AddPatient />
 
     // <Router>
     //   <Sidebar />

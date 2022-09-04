@@ -44,7 +44,7 @@ export default function NewBranch() {
     try {
       const response = await axios.post(
         "http://localhost:4000/medicine",
-        { data: "test" },
+        bodyFormData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
