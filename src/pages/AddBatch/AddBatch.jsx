@@ -3,12 +3,12 @@ import axios from "axios";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
-export default function NewBatch() {
+export default function AddBatch() {
   //   const navigate = useNavigate();
 
   const [expire, setExpire] = useState("");
   const [quantity, setQuantity] = useState("");
-
+  const [status, setStatus] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const errRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
@@ -20,7 +20,11 @@ export default function NewBatch() {
     try {
       const response = await axios.post(
         "http://localhost:4000/medicine_Batch",
-        JSON.stringify({ drug_expire: expire, drug_quantity: quantity }),
+        JSON.stringify({
+          drug_expire: expire,
+          drug_quantity: quantity,
+          status,
+        }),
         {
           headers: { "Content-Type": "application/json" },
           Authorization: "Bearer " + localStorage.getItem("token"),
@@ -40,7 +44,7 @@ export default function NewBatch() {
         setErrMsg("Missing ");
       } else {
         setIsLoading(false);
-        setErrMsg("adding User Failed");
+        setErrMsg("Adding Failed");
       }
     }
   };
@@ -73,7 +77,7 @@ export default function NewBatch() {
             <input
               type="text"
               placeholder="enter name"
-              required
+
               // onChange={(event) => setName(event.target.value)}
             />
           </div>
@@ -93,6 +97,16 @@ export default function NewBatch() {
               placeholder="enter Address"
               required
               onChange={(event) => setQuantity(event.target.value)}
+            />
+          </div>
+
+          <div className="input-box">
+            <span className="details">Status</span>
+            <input
+              type="text"
+              placeholder="enter status"
+              required
+              onChange={(event) => setStatus(event.target.value)}
             />
           </div>
         </div>

@@ -1,17 +1,46 @@
 import "./EditUnit.css";
 import axios from "axios";
 import { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
-export default function NewBranch() {
+export default function EditUnit() {
   //   const navigate = useNavigate();
 
+  const location = useLocation();
+  const id = location.state;
+  console.log(id);
   const [uname, setUname] = useState("");
   const [status, setStatus] = useState("");
 
   const [errMsg, setErrMsg] = useState("");
   const errRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/unit", id);
+
+        console.log(response.data);
+        console.log(response.data[0].unit_name);
+        console.log(response.data[0].status);
+
+        setUname(response.data[0].unit_name);
+        setStatus(response.data[0].status);
+      } catch (err) {
+        if (!err?.response) {
+          setErrMsg("No Server Response");
+        } else if (err.response?.status === 400) {
+          setErrMsg("Missing ");
+        } else {
+          setErrMsg("Failed to Get data");
+        }
+      }
+      setIsLoading(false);
+    };
+
+    fetchData();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,7 +49,7 @@ export default function NewBranch() {
     try {
       const response = await axios.put(
         "http://localhost:4000/unit",
-        JSON.stringify({ unit_name:Uname,status }),
+        JSON.stringify({ id, unit_name: uname, status }),
         {
           headers: { "Content-Type": "application/json" },
           Authorization: "Bearer " + localStorage.getItem("token"),
@@ -74,16 +103,18 @@ export default function NewBranch() {
               type="text"
               placeholder="enter Dosage name"
               required
+              value={uname}
               onChange={(event) => setUname(event.target.value)}
             />
           </div>
-        
+
           <div className="input-box">
             <span className="details">Status</span>
             <input
               type="text"
               placeholder="enter Address"
               required
+              value={status}
               onChange={(event) => setStatus(event.target.value)}
             />
           </div>

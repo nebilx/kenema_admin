@@ -1,19 +1,48 @@
 import "./EditBranch.css";
 import axios from "axios";
 import { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
-export default function NewBranch() {
+export default function EditBranch() {
   //   const navigate = useNavigate();
+  const location = useLocation();
+  const id = location.state;
+  console.log(id);
 
   const [name, setName] = useState("");
   const [pno, setPno] = useState("");
   const [address, setAddress] = useState("");
-const [status,setStatus] = useState("");
+  const [status, setStatus] = useState("");
 
   const [errMsg, setErrMsg] = useState("");
   const errRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/branch", id);
+
+        console.log(response.data);
+
+        setName(response.data[0].name);
+        setPno(response.data[0].pno);
+        setAddress(response.data[0].address);
+        setStatus(response.data[0].status);
+      } catch (err) {
+        if (!err?.response) {
+          setErrMsg("No Server Response");
+        } else if (err.response?.status === 400) {
+          setErrMsg("Missing ");
+        } else {
+          setErrMsg("Failed to Get data");
+        }
+      }
+      setIsLoading(false);
+    };
+
+    fetchData();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,7 +51,7 @@ const [status,setStatus] = useState("");
     try {
       const response = await axios.put(
         "http://localhost:4000/branch",
-        JSON.stringify({id, name, pno, address,status }),
+        JSON.stringify({ id, name, pno, address, status }),
         {
           headers: { "Content-Type": "application/json" },
           Authorization: "Bearer " + localStorage.getItem("token"),
@@ -76,6 +105,7 @@ const [status,setStatus] = useState("");
               type="text"
               placeholder="enter name"
               required
+              value={name}
               onChange={(event) => setName(event.target.value)}
             />
           </div>
@@ -85,6 +115,7 @@ const [status,setStatus] = useState("");
               type="number"
               placeholder="enter Phone number"
               required
+              value={pno}
               onChange={(event) => setPno(event.target.value)}
             />
           </div>
@@ -94,6 +125,7 @@ const [status,setStatus] = useState("");
               type="text"
               placeholder="enter Address"
               required
+              value={address}
               onChange={(event) => setAddress(event.target.value)}
             />
           </div>
@@ -103,6 +135,7 @@ const [status,setStatus] = useState("");
               type="text"
               placeholder="enter Status"
               required
+              value={status}
               onChange={(event) => setStatus(event.target.value)}
             />
           </div>

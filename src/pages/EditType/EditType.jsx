@@ -1,26 +1,29 @@
 import "./EditType.css";
 import axios from "axios";
 import { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
-export default function NewBranch() {
+export default function EditType() {
   //   const navigate = useNavigate();
+  const location = useLocation();
+  const id = location.state;
+  console.log(id);
 
-  const [Tname, setTname] = useState("");
+  const [tname, setTname] = useState("");
   const [status, setStatus] = useState("");
 
   const [errMsg, setErrMsg] = useState("");
   const errRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleUpdate = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
       const response = await axios.put(
         "http://localhost:4000/type",
-        JSON.stringify({ type_name:Tname,status }),
+        JSON.stringify({ id, type_name: tname, status }),
         {
           headers: { "Content-Type": "application/json" },
           Authorization: "Bearer " + localStorage.getItem("token"),
@@ -66,7 +69,7 @@ export default function NewBranch() {
         {errMsg}
       </p>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleUpdate}>
         <div className="branch-detail">
           <div className="input-box">
             <span className="details">Name</span>
@@ -74,16 +77,18 @@ export default function NewBranch() {
               type="text"
               placeholder="enter Type name"
               required
+              value={tname}
               onChange={(event) => setTname(event.target.value)}
             />
           </div>
-        
+
           <div className="input-box">
             <span className="details">Status</span>
             <input
               type="text"
               placeholder="enter Address"
               required
+              value={status}
               onChange={(event) => setStatus(event.target.value)}
             />
           </div>

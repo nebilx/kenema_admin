@@ -1,33 +1,60 @@
-import "./AddDosage.css";
+import "./EditPackage.css";
 import axios from "axios";
 import { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
-export default function AddDosage() {
+export default function EditPackage() {
   //   const navigate = useNavigate();
+  const location = useLocation();
+  const id = location.state;
+  console.log(id);
 
-  const [dname, setDname] = useState("");
+  const [pname, setPname] = useState("");
   const [status, setStatus] = useState("");
 
   const [errMsg, setErrMsg] = useState("");
   const errRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/package", id);
+
+        console.log(response.data);
+
+        setPname(response.data[0].package_name);
+        setStatus(response.data[0].status);
+      } catch (err) {
+        if (!err?.response) {
+          setErrMsg("No Server Response");
+        } else if (err.response?.status === 400) {
+          setErrMsg("Missing ");
+        } else {
+          setErrMsg("Failed to Get data");
+        }
+      }
+      setIsLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      const response = await axios.post(
-        "http://localhost:4000/dosage",
-        JSON.stringify({ dosage_name: dname, status }),
+      const response = await axios.put(
+        "http://localhost:4000/package",
+        JSON.stringify({ id, package_name: pname, status }),
         {
           headers: { "Content-Type": "application/json" },
           Authorization: "Bearer " + localStorage.getItem("token"),
         }
       );
       setIsLoading(false);
-      setErrMsg("Added Successfully");
+      setErrMsg("Updated Successfully");
       console.log(JSON.stringify(response));
       //   navigate("/users?");
     } catch (err) {
@@ -40,7 +67,7 @@ export default function AddDosage() {
         setErrMsg("Missing ");
       } else {
         setIsLoading(false);
-        setErrMsg("Adding Failed");
+        setErrMsg("Updating Failed");
       }
     }
   };
@@ -56,7 +83,7 @@ export default function AddDosage() {
     <span className="loader" />
   ) : (
     <div className="container">
-      <div className="title">Add Dosage</div>
+      <div className="title">Edit Package</div>
       <br />
       <p
         ref={errRef}
@@ -72,9 +99,10 @@ export default function AddDosage() {
             <span className="details">Name</span>
             <input
               type="text"
-              placeholder="enter Dosage name"
+              placeholder="enter Package name"
               required
-              onChange={(event) => setDname(event.target.value)}
+              value={pname}
+              onChange={(event) => setPname(event.target.value)}
             />
           </div>
 
@@ -84,13 +112,14 @@ export default function AddDosage() {
               type="text"
               placeholder="enter Address"
               required
+              value={status}
               onChange={(event) => setStatus(event.target.value)}
             />
           </div>
         </div>
 
         <div className="button">
-          <input type="submit" value="Add" />
+          <input type="submit" value="Update" />
         </div>
       </form>
     </div>

@@ -3,7 +3,7 @@ import axios from "axios";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
-export default function NewBranch() {
+export default function AddType() {
   //   const navigate = useNavigate();
 
   const [Tname, setTname] = useState("");
@@ -20,7 +20,7 @@ export default function NewBranch() {
     try {
       const response = await axios.post(
         "http://localhost:4000/type",
-        JSON.stringify({ type_name:Tname,status }),
+        JSON.stringify({ type_name: Tname, status }),
         {
           headers: { "Content-Type": "application/json" },
           Authorization: "Bearer " + localStorage.getItem("token"),
@@ -40,7 +40,7 @@ export default function NewBranch() {
         setErrMsg("Missing ");
       } else {
         setIsLoading(false);
-        setErrMsg("adding User Failed");
+        setErrMsg("Adding Failed");
       }
     }
   };
@@ -77,7 +77,7 @@ export default function NewBranch() {
               onChange={(event) => setTname(event.target.value)}
             />
           </div>
-        
+
           <div className="input-box">
             <span className="details">Status</span>
             <input

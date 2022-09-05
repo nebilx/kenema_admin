@@ -1,12 +1,12 @@
-import "./AddDosage.css";
+import "./AddPackage.css";
 import axios from "axios";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
-export default function AddDosage() {
+export default function AddPackage() {
   //   const navigate = useNavigate();
 
-  const [dname, setDname] = useState("");
+  const [pname, setPname] = useState("");
   const [status, setStatus] = useState("");
 
   const [errMsg, setErrMsg] = useState("");
@@ -19,8 +19,8 @@ export default function AddDosage() {
 
     try {
       const response = await axios.post(
-        "http://localhost:4000/dosage",
-        JSON.stringify({ dosage_name: dname, status }),
+        "http://localhost:4000/package",
+        JSON.stringify({ package_name: pname, status }),
         {
           headers: { "Content-Type": "application/json" },
           Authorization: "Bearer " + localStorage.getItem("token"),
@@ -56,7 +56,7 @@ export default function AddDosage() {
     <span className="loader" />
   ) : (
     <div className="container">
-      <div className="title">Add Dosage</div>
+      <div className="title">Add Package</div>
       <br />
       <p
         ref={errRef}
@@ -72,9 +72,9 @@ export default function AddDosage() {
             <span className="details">Name</span>
             <input
               type="text"
-              placeholder="enter Dosage name"
+              placeholder="enter package name"
               required
-              onChange={(event) => setDname(event.target.value)}
+              onChange={(event) => setPname(event.target.value)}
             />
           </div>
 

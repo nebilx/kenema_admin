@@ -1,10 +1,13 @@
-import "./AddMedicine.css";
+import "./EditMedicine.css";
 import axios from "axios";
 import { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
-export default function AddMedicine() {
+export default function EditMedicine() {
   //   const navigate = useNavigate();
+  const location = useLocation();
+  const id = location.state;
+  console.log(id);
 
   const [mid, setMid] = useState("");
   const [name, setName] = useState("");
@@ -25,12 +28,8 @@ export default function AddMedicine() {
   const errRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
 
-  const [datap, setDatap] = useState([]);
-  const [datad, setDatad] = useState([]);
-  const [datat, setDatat] = useState([]);
-  const [datau, setDatau] = useState([]);
-
   var bodyFormData = new FormData();
+  bodyFormData.append("id", id);
   bodyFormData.append("medicine_id", mid);
   bodyFormData.append("name", name);
   bodyFormData.append("type", type);
@@ -49,22 +48,24 @@ export default function AddMedicine() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/medcontent", {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        });
+        const response = await axios.get("http://localhost:4000/medicine", id);
 
-        const p = response.data.package.map((d) => d.package_name);
-        const d = response.data.dosage.map((d) => d.dosage_name);
-        const t = response.data.type.map((d) => d.type_name);
-        const u = response.data.unit.map((d) => d.unit_name);
+        console.log(response.data);
 
-        setDatap(p);
-        setDatad(d);
-        setDatat(t);
-        setDatau(u);
+        setMid(response.data[0].medicine_id);
+        setName(response.data[0].name);
+        setType(response.data[0].type);
+        setMfg(response.data[0].mfg);
+        setGeneric_name(response.data[0].generic_name);
+        setDate_mfg(response.data[0].date_mfg);
+        setDosage(response.data[0].dosage);
+        setDate_expire(response.data[0].date_expire);
+        setPrice(response.data[0].price);
+        setStrength(response.data[0].strength);
+        setUnit(response.data[0].unit);
+        setPackages(response.data[0].package);
+        setImage(response.data[0].image);
+        setStatus(response.data[0].status);
       } catch (err) {
         if (!err?.response) {
           setErrMsg("No Server Response");
@@ -74,16 +75,18 @@ export default function AddMedicine() {
           setErrMsg("Failed to Get data");
         }
       }
+      setIsLoading(false);
     };
+
     fetchData();
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleUpdate = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      const response = await axios.post(
+      const response = await axios.put(
         "http://localhost:4000/medicine",
         bodyFormData,
         {
@@ -94,7 +97,7 @@ export default function AddMedicine() {
         }
       );
       setIsLoading(false);
-      setErrMsg("Added Successfully");
+      setErrMsg("Updated Successfully");
       console.log(JSON.stringify(response));
       //   navigate("/users?");
     } catch (err) {
@@ -107,7 +110,7 @@ export default function AddMedicine() {
         setErrMsg("Missing ");
       } else {
         setIsLoading(false);
-        setErrMsg("Adding Failed");
+        setErrMsg("adding User Failed");
       }
     }
   };
@@ -123,7 +126,7 @@ export default function AddMedicine() {
     <span className="loader" />
   ) : (
     <div className="container">
-      <div className="title">Add Medicine</div>
+      <div className="title">Edit Medicine</div>
       <br />
       <p
         ref={errRef}
@@ -133,7 +136,7 @@ export default function AddMedicine() {
         {errMsg}
       </p>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleUpdate}>
         <div className="branch-detail">
           <div className="input-box">
             <span className="details">Medicine Id</span>
@@ -141,6 +144,7 @@ export default function AddMedicine() {
               type="text"
               placeholder="enter name"
               required
+              value={mid}
               onChange={(event) => setMid(event.target.value)}
             />
           </div>
@@ -151,32 +155,20 @@ export default function AddMedicine() {
               type="text"
               placeholder="enter name"
               required
+              value={name}
               onChange={(event) => setName(event.target.value)}
             />
           </div>
 
           <div className="input-box">
-            {/* <span className="details">Type</span>
+            <span className="details">Type</span>
             <input
               type="text"
               placeholder="enter name"
               required
+              value={type}
               onChange={(event) => setType(event.target.value)}
-            /> */}
-
-            <span className="details">Type</span>
-            <select
-              className="ok"
-              name="active"
-              id="active"
-              required
-              onChange={(event) =>
-                setType(event.target.options[event.target.selectedIndex].text)
-              }
-            >
-              <option value="item">Medicine Type</option>
-              {datat && datat.map((m) => <option value="item">{m}</option>)}
-            </select>
+            />
           </div>
 
           <div className="input-box">
@@ -185,6 +177,7 @@ export default function AddMedicine() {
               type="text"
               placeholder="enter name"
               required
+              value={mfg}
               onChange={(event) => setMfg(event.target.value)}
             />
           </div>
@@ -195,6 +188,7 @@ export default function AddMedicine() {
               type="text"
               placeholder="enter name"
               required
+              value={generic_name}
               onChange={(event) => setGeneric_name(event.target.value)}
             />
           </div>
@@ -205,32 +199,20 @@ export default function AddMedicine() {
               type="text"
               placeholder="enter name"
               required
+              value={date_mfg}
               onChange={(event) => setDate_mfg(event.target.value)}
             />
           </div>
 
           <div className="input-box">
-            {/* <span className="details">Dosage</span>
+            <span className="details">Dosage</span>
             <input
               type="text"
               placeholder="enter name"
               required
+              value={dosage}
               onChange={(event) => setDosage(event.target.value)}
-            /> */}
-
-            <span className="details">Type</span>
-            <select
-              className="ok"
-              name="active"
-              id="active"
-              required
-              onChange={(event) =>
-                setDosage(event.target.options[event.target.selectedIndex].text)
-              }
-            >
-              <option value="item">Medicine Dosage</option>
-              {datad && datad.map((m) => <option value="item">{m}</option>)}
-            </select>
+            />
           </div>
 
           <div className="input-box">
@@ -239,6 +221,7 @@ export default function AddMedicine() {
               type="text"
               placeholder="enter name"
               required
+              value={date_expire}
               onChange={(event) => setDate_expire(event.target.value)}
             />
           </div>
@@ -249,6 +232,7 @@ export default function AddMedicine() {
               type="text"
               placeholder="enter name"
               required
+              value={price}
               onChange={(event) => setPrice(event.target.value)}
             />
           </div>
@@ -259,59 +243,31 @@ export default function AddMedicine() {
               type="text"
               placeholder="enter name"
               required
+              value={strength}
               onChange={(event) => setStrength(event.target.value)}
             />
           </div>
 
           <div className="input-box">
-            {/* <span className="details">Unit</span>
+            <span className="details">Unit</span>
             <input
               type="text"
               placeholder="enter name"
               required
+              value={unit}
               onChange={(event) => setUnit(event.target.value)}
-            /> */}
-
-            <span className="details">Unit</span>
-            <select
-              className="ok"
-              name="active"
-              id="active"
-              required
-              onChange={(event) =>
-                setUnit(event.target.options[event.target.selectedIndex].text)
-              }
-            >
-              <option value="item">Medicine Unit</option>
-              {datau && datau.map((m) => <option value="item">{m}</option>)}
-            </select>
+            />
           </div>
 
           <div className="input-box">
-            {/* <span className="details">Package</span>
+            <span className="details">Package</span>
             <input
               type="text"
               placeholder="enter name"
               required
+              value={packages}
               onChange={(event) => setPackages(event.target.value)}
             />
-          </div> */}
-
-            <span className="details">Package</span>
-            <select
-              className="ok"
-              name="active"
-              id="active"
-              required
-              onChange={(event) =>
-                setPackages(
-                  event.target.options[event.target.selectedIndex].text
-                )
-              }
-            >
-              <option value="item">Medicine Package</option>
-              {datap && datap.map((m) => <option value="item">{m}</option>)}
-            </select>
           </div>
 
           <div className="input-box">
@@ -320,15 +276,9 @@ export default function AddMedicine() {
               type="text"
               placeholder="enter name"
               required
+              value={image}
               onChange={(event) => setImage(event.target.value)}
             />
-
-            {/* <input
-              type="file"
-              id="file"
-              accept="image/*"
-              onChange={(event) => setImage(event.target.files[0])}
-            /> */}
           </div>
 
           <div className="input-box">
@@ -337,13 +287,14 @@ export default function AddMedicine() {
               type="text"
               placeholder="enter status"
               required
+              value={status}
               onChange={(event) => setStatus(event.target.value)}
             />
           </div>
         </div>
 
         <div className="button">
-          <input type="submit" value="Add" />
+          <input type="submit" value="Update" />
         </div>
       </form>
     </div>

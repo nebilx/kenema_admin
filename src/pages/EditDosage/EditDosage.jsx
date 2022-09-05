@@ -1,10 +1,13 @@
 import "./EditDosage.css";
 import axios from "axios";
 import { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
-export default function NewBranch() {
+export default function EditDosage() {
   //   const navigate = useNavigate();
+  const location = useLocation();
+  const id = location.state;
+  console.log(id);
 
   const [dname, setDname] = useState("");
   const [status, setStatus] = useState("");
@@ -13,6 +16,28 @@ export default function NewBranch() {
   const errRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/dosage", id);
+
+        setDname(response.data[0].dosage_name);
+        setStatus(response.data[0].status);
+      } catch (err) {
+        if (!err?.response) {
+          setErrMsg("No Server Response");
+        } else if (err.response?.status === 400) {
+          setErrMsg("Missing ");
+        } else {
+          setErrMsg("Failed to Get data");
+        }
+      }
+      setIsLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -20,7 +45,7 @@ export default function NewBranch() {
     try {
       const response = await axios.put(
         "http://localhost:4000/dosage",
-        JSON.stringify({ id,dosage_name:dname,status }),
+        JSON.stringify({ id, dosage_name: dname, status }),
         {
           headers: { "Content-Type": "application/json" },
           Authorization: "Bearer " + localStorage.getItem("token"),
@@ -74,16 +99,18 @@ export default function NewBranch() {
               type="text"
               placeholder="enter Dosage name"
               required
+              value={dname}
               onChange={(event) => setDname(event.target.value)}
             />
           </div>
-        
+
           <div className="input-box">
             <span className="details">Status</span>
             <input
               type="text"
               placeholder="enter Address"
               required
+              value={status}
               onChange={(event) => setStatus(event.target.value)}
             />
           </div>

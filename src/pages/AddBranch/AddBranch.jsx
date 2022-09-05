@@ -3,13 +3,13 @@ import axios from "axios";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
-export default function NewBranch() {
+export default function AddBranch() {
   //   const navigate = useNavigate();
 
   const [name, setName] = useState("");
   const [pno, setPno] = useState("");
   const [address, setAddress] = useState("");
-const [status,setStatus] = useState("");
+  const [status, setStatus] = useState("");
 
   const [errMsg, setErrMsg] = useState("");
   const errRef = useRef();
@@ -22,7 +22,7 @@ const [status,setStatus] = useState("");
     try {
       const response = await axios.post(
         "http://localhost:4000/branch",
-        JSON.stringify({ name, pno, address,status }),
+        JSON.stringify({ name, pno, address, status }),
         {
           headers: { "Content-Type": "application/json" },
           Authorization: "Bearer " + localStorage.getItem("token"),
@@ -42,7 +42,7 @@ const [status,setStatus] = useState("");
         setErrMsg("Missing ");
       } else {
         setIsLoading(false);
-        setErrMsg("adding User Failed");
+        setErrMsg("Adding Failed");
       }
     }
   };
