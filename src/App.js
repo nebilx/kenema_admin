@@ -8,6 +8,8 @@ import { Reports, ReportsOne, ReportsTwo, ReportsThree } from "./pages/Reports";
 
 import AddBatch from "./pages/AddBatch/AddBatch";
 
+import AddPrescription from "./pages/AddPrescription/AddPrescription";
+
 import AddPackage from "./pages/AddPackage/AddPackage";
 import ListPackage from "./pages/ListPackage/ListPackage";
 import EditPackage from "./pages/EditPackage/EditPackage";
@@ -39,7 +41,7 @@ import EditPatient from "./pages/EditPatient/EditPatient";
 function App() {
   return (
     <Router>
-      <AddBatch />
+      <AddPrescription />
       <Routes>
         <Route path="/editT" exact element={<EditType />} />
         <Route path="/editD" exact element={<EditDosage />} />

@@ -153,19 +153,19 @@ export default function NewPatient() {
 
           <div className="input-box">
             <span className="details">Photo Image</span>
-            <input
+            {/* <input
               type="text"
               placeholder="enter name"
               required
               onChange={(event) => setImage(event.target.value)}
-            />
+            /> */}
 
-            {/* <input
+            <input
               type="file"
               id="file"
               accept="image/*"
               onChange={(event) => setImage(event.target.files[0])}
-            /> */}
+            />
           </div>
 
           <div className="input-box">
@@ -230,19 +230,20 @@ export default function NewPatient() {
 
           <div className="input-box">
             <span className="details">Insurance Image</span>
-            <input
+
+            {/* <input
               type="text"
               placeholder="enter name"
               required
               onChange={(event) => setI_image(event.target.value)}
-            />
+            /> */}
 
-            {/* <input
+            <input
               type="file"
               id="file"
               accept="image/*"
               onChange={(event) => setI_image(event.target.files[0])}
-            /> */}
+            />
           </div>
 
           <div className="input-box">
