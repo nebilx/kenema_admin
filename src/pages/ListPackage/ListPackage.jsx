@@ -102,7 +102,7 @@ export default function ListPackage() {
                   <td>{data.status}</td>
                   <td>
                     {" "}
-                    <Link to="/editPa" state={data._id}>
+                    <Link to="/editPac" state={data._id}>
                       <button> Edit</button>
                     </Link>
                   </td>

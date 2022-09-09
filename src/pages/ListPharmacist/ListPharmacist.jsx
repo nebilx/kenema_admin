@@ -1,10 +1,10 @@
-import "./ListPatient.css";
+import "./ListPharmacist.css";
 import axios from "axios";
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
-export default function ListPatient() {
+export default function ListPharmacist() {
   //   const navigate = useNavigate();
 
   const [name, setName] = useState("");
@@ -19,8 +19,8 @@ export default function ListPatient() {
   const onDelete = async (id) => {
     setIsLoading(true);
     try {
-      console.log("id" + id);
-      const response = await axios.delete("http://localhost:4000/type", {
+      console.log("id: " + id);
+      const response = await axios.delete("http://localhost:4000/pharmacist", {
         data: { id },
       });
       setIsLoading(false);
@@ -45,7 +45,7 @@ export default function ListPatient() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/patient", {
+        const response = await axios.get("http://localhost:4000/pharmacist", {
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + localStorage.getItem("token"),
@@ -77,7 +77,7 @@ export default function ListPatient() {
 
   return (
     <div className="container">
-      <div className="title">List Type</div>
+      <div className="title">List Pharmacist</div>
       <br />
       <p
         ref={errRef}
@@ -90,20 +90,7 @@ export default function ListPatient() {
       <table>
         <tbody>
           <tr>
-            <td>Patient_Name</td>
-            <td>Age</td>
-            <td>Gender</td>
-            <td>Date of Birth</td>
-            <td>Phone Number</td>
-            <td>Image</td>
-            <td>City</td>
-            <td>Sub City</td>
-            <td>Woreda</td>
-            <td>Insurance ID</td>
-            <td>Insurance Name</td>
-            <td>Insurance Image</td>
-            <td>User Name</td>
-            <td>User Password</td>
+            <td>Pharmacist name</td>
             <td>Status</td>
           </tr>
 
@@ -111,26 +98,11 @@ export default function ListPatient() {
             data.map((data) => {
               return (
                 <tr key={data._id}>
-                  <td>{data.name}</td>
-                  <td>{data.age}</td>
-                  <td>{data.gender}</td>
-                  <td>{data.dob}</td>
-                  <td>{data.pno}</td>
-                  <td>{data.image}</td>
-                  <td>{data.address[0].city}</td>
-                  <td>{data.address[0].sub_city}</td>
-                  <td>{data.address[0].woreda}</td>
-                  <td>{data.address[0].house_no}</td>
-                  <td>{data.insurance[0].insurance_id}</td>
-                  <td>{data.insurance[0].insurance_name}</td>
-                  <td>{data.insurance[0].insurance_image}</td>
-                  <td>{data.user[0].user_name}</td>
-                  <td>{data.user[0].user_pwd}</td>
-                  <td>{data.user[0].status}</td>
-
+                  <td>{data.name}<img src={data.image.url}  width="30" height="30"></img></td>
+                  <td>{data.status}</td>
                   <td>
                     {" "}
-                    <Link to="/editPa" state={data._id}>
+                    <Link to="/editPh" state={data._id}>
                       <button> Edit</button>
                     </Link>
                   </td>

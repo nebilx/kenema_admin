@@ -10,6 +10,10 @@ import AddBatch from "./pages/AddBatch/AddBatch";
 
 import AddPrescription from "./pages/AddPrescription/AddPrescription";
 
+import AddPharmacist from "./pages/AddPharmacist/AddPharmacist";
+import ListPharmacist from "./pages/ListPharmacist/ListPharmacist";
+import EditPharmacist from "./pages/EditPharmacist/EditPharmacist"
+
 import AddPackage from "./pages/AddPackage/AddPackage";
 import ListPackage from "./pages/ListPackage/ListPackage";
 import EditPackage from "./pages/EditPackage/EditPackage";
@@ -38,19 +42,21 @@ import AddPatient from "./pages/AddPatient/AddPatient";
 import ListPatient from "./pages/ListPatient/ListPatient";
 import EditPatient from "./pages/EditPatient/EditPatient";
 
+
 function App() {
   return (
     <Router>
-      <AddPrescription />
+      <AddBatch />
       <Routes>
         <Route path="/editT" exact element={<EditType />} />
         <Route path="/editD" exact element={<EditDosage />} />
         <Route path="/editU" exact element={<EditUnit />} />
         <Route path="/editB" exact element={<EditBranch />} />
-        <Route path="/editP" exact element={<EditPatient />} />
+        <Route path="/editPa" exact element={<EditPatient />} />
         <Route path="/editM" exact element={<EditMedicine />} />
-        <Route path="/editPa" exact element={<EditPackage />} />
-
+        <Route path="/editPac" exact element={<EditPackage />} />
+        <Route path="/editPh" exact element={<EditPharmacist />} />
+        
         {/* <Route path="/overview" exact component={Overview} />
         <Route path="/reports" exact component={AddMedicine} />
         <Route path="/reports/reports1" exact component={AddPatient} />
