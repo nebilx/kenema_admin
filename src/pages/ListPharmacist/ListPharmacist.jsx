@@ -77,7 +77,14 @@ export default function ListPharmacist() {
 
   return (
     <div className="container">
+
+                <Link to="/addPh">
+                      <button> New</button>
+                    </Link>
+
       <div className="title">List Pharmacist</div>
+      <br/>
+
       <br />
       <p
         ref={errRef}
@@ -90,7 +97,7 @@ export default function ListPharmacist() {
       <table>
         <tbody>
           <tr>
-            <td>Pharmacist name</td>
+            <td>Name</td>
             <td>Status</td>
           </tr>
 

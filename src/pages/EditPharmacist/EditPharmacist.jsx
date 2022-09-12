@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
 export default function EditPharmacist() {
-  //   const navigate = useNavigate();
+    const navigate = useNavigate();
   const location = useLocation();
   const id = location.state;
   console.log(id);
@@ -69,7 +69,7 @@ export default function EditPharmacist() {
       setIsLoading(false);
       setErrMsg("Updated Successfully");
       console.log(JSON.stringify(response));
-      //   navigate("/users?");
+        navigate("/listPh?");
     } catch (err) {
       console.log(err);
       if (!err?.response) {
@@ -96,7 +96,7 @@ export default function EditPharmacist() {
     <span className="loader" />
   ) : (
     <div className="container">
-      <div className="title">Add Pharmacist</div>
+      <div className="title">Edit Pharmacist</div>
       <br />
       <p
         ref={errRef}

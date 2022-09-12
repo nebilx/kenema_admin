@@ -1,4 +1,4 @@
-import "./ListBranch.css";
+import "./ListBatch.css";
 import axios from "axios";
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -21,7 +21,7 @@ export default function ListBranch() {
     try {
       console.log("id" + id);
       const response = await axios.delete(
-        "http://localhost:4000/medicine_Batch",
+        "http://localhost:4000/batch",
         {
           data: { id },
         }
@@ -49,7 +49,7 @@ export default function ListBranch() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:4000/medicine_Batch",
+          "http://localhost:4000/batch",
           {
             headers: {
               "Content-Type": "application/json",
@@ -74,6 +74,7 @@ export default function ListBranch() {
     fetchData();
   }, []);
 
+
   useEffect(() => {
     if (errMsg.trim() !== "")
       setTimeout(() => {
@@ -93,21 +94,23 @@ export default function ListBranch() {
         {errMsg}
       </p>
 
+
       <table>
         <tbody>
           <tr>
-            <td>Drug Expire</td>
-            <td>Drug Quantity</td>
-            <td>Status</td>
+            <td>Batch Date</td>
+            <td>N0 Drug</td>
           </tr>
 
           {data &&
             data.map((data) => {
               return (
                 <tr key={data._id}>
-                  <td>{data.drug_expire}</td>
-                  <td>{data.drug_quantity}</td>
-                  <td>{data.status}</td>
+                  <td>{data.batch_date}</td>
+                  <td>{data.batch_medicine.length}</td>
+                  <td> <Link to="/viewBa" state={data._id}>
+                    <button> View</button>
+                  </Link></td>
                   <td>
                     {" "}
                     <Link to="/editB" state={data._id}>

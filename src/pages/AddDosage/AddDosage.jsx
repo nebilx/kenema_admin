@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
 export default function AddDosage() {
-  //   const navigate = useNavigate();
+     const navigate = useNavigate();
 
   const [dname, setDname] = useState("");
   const [status, setStatus] = useState("");
@@ -29,7 +29,7 @@ export default function AddDosage() {
       setIsLoading(false);
       setErrMsg("Added Successfully");
       console.log(JSON.stringify(response));
-      //   navigate("/users?");
+         navigate("/listD?");
     } catch (err) {
       console.log(err);
       if (!err?.response) {

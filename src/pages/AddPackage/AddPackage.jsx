@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
 export default function AddPackage() {
-  //   const navigate = useNavigate();
+    const navigate = useNavigate();
 
   const [pname, setPname] = useState("");
   const [status, setStatus] = useState("");
@@ -29,7 +29,7 @@ export default function AddPackage() {
       setIsLoading(false);
       setErrMsg("Added Successfully");
       console.log(JSON.stringify(response));
-      //   navigate("/users?");
+         navigate("/listPac?");
     } catch (err) {
       console.log(err);
       if (!err?.response) {

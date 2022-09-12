@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
 export default function EditPatient() {
-  //   const navigate = useNavigate();
+    const navigate = useNavigate();
   const location = useLocation();
   const id = location.state;
   console.log(id);
@@ -37,7 +37,7 @@ export default function EditPatient() {
   bodyFormData.append("gender", gender);
   bodyFormData.append("dob", dob);
   bodyFormData.append("pno", pno);
-  bodyFormData.append("image", image);
+  bodyFormData.append("p_image", image);
   bodyFormData.append("city", city);
   bodyFormData.append("sub_city", sub_city);
   bodyFormData.append("woreda", woreda);
@@ -61,14 +61,14 @@ export default function EditPatient() {
         setGender(response.data[0].gender);
         setDob(response.data[0].dob);
         setPno(response.data[0].pno);
-        setImage(response.data[0].image);
+        setImage(response.data[0].p_image.url);
         setCity(response.data[0].address[0].city);
         setSub_city(response.data[0].address[0].sub_city);
         setWoreda(response.data[0].address[0].woreda);
         setHouse_no(response.data[0].address[0].house_no);
         setI_id(response.data[0].insurance[0].insurance_id);
         setI_name(response.data[0].insurance[0].insurance_name);
-        setI_image(response.data[0].insurance[0].insurance_image);
+        setI_image(response.data[0].insurance[0].insurance_image.url);
         setU_name(response.data[0].user[0].user_name);
         setU_pwd(response.data[0].user[0].user_pwd);
 
@@ -105,7 +105,7 @@ export default function EditPatient() {
       setIsLoading(false);
       setErrMsg("Updated Successfully");
       console.log(JSON.stringify(response));
-      //   navigate("/users?");
+        navigate("/listPa?");
     } catch (err) {
       console.log(err);
       if (!err?.response) {
@@ -132,7 +132,7 @@ export default function EditPatient() {
     <span className="loader" />
   ) : (
     <div className="container">
-      <div className="title">Add Patient</div>
+      <div className="title">Edit Patient</div>
       <br />
       <p
         ref={errRef}
@@ -201,12 +201,13 @@ export default function EditPatient() {
 
           <div className="input-box">
             <span className="details">Photo Image</span>
+            <br/>
+            <img src={image}  width="30" height="30"></img>
             <input
-              type="text"
-              placeholder="enter name"
-              required
-              value={image}
-              onChange={(event) => setImage(event.target.value)}
+              type="file"
+              id="file"
+              accept="image/*"
+              onChange={(event) => setImage(event.target.files[0])}
             />
           </div>
 
@@ -278,12 +279,13 @@ export default function EditPatient() {
 
           <div className="input-box">
             <span className="details">Insurance Image</span>
+            <br/>
+            <img src={i_image}  width="30" height="30"></img>
             <input
-              type="text"
-              placeholder="enter name"
-              required
-              value={i_image}
-              onChange={(event) => setI_image(event.target.value)}
+              type="file"
+              id="file"
+              accept="image/*"
+              onChange={(event) => setI_image(event.target.files[0])}
             />
           </div>
 

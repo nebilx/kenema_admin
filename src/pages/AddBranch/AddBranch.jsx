@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
 export default function AddBranch() {
-  //   const navigate = useNavigate();
+    const navigate = useNavigate();
 
   const [name, setName] = useState("");
   const [pno, setPno] = useState("");
@@ -31,7 +31,7 @@ export default function AddBranch() {
       setIsLoading(false);
       setErrMsg("Added Successfully");
       console.log(JSON.stringify(response));
-      //   navigate("/users?");
+         navigate("/listB?");
     } catch (err) {
       console.log(err);
       if (!err?.response) {

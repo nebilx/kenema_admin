@@ -77,6 +77,10 @@ export default function ListUnit() {
 
   return (
     <div className="container">
+
+<Link to="/addU">
+                      <button> New</button>
+                    </Link>
       <div className="title">List Unit</div>
       <br />
       <p

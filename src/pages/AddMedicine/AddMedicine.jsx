@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
 export default function AddMedicine() {
-  //   const navigate = useNavigate();
+    const navigate = useNavigate();
 
   const [mid, setMid] = useState("");
   const [name, setName] = useState("");
@@ -56,15 +56,11 @@ export default function AddMedicine() {
           },
         });
 
-        const p = response.data.package.map((d) => d.package_name);
-        const d = response.data.dosage.map((d) => d.dosage_name);
-        const t = response.data.type.map((d) => d.type_name);
-        const u = response.data.unit.map((d) => d.unit_name);
+        setDatap(response.data.package.map((d) => d.package_name));
+        setDatad(response.data.dosage.map((d) => d.dosage_name));
+        setDatat(response.data.type.map((d) => d.type_name));
+        setDatau(response.data.unit.map((d) => d.unit_name));
 
-        setDatap(p);
-        setDatad(d);
-        setDatat(t);
-        setDatau(u);
       } catch (err) {
         if (!err?.response) {
           setErrMsg("No Server Response");
@@ -96,7 +92,7 @@ export default function AddMedicine() {
       setIsLoading(false);
       setErrMsg("Added Successfully");
       console.log(JSON.stringify(response));
-      //   navigate("/users?");
+       navigate("/listM?");
     } catch (err) {
       console.log(err);
       if (!err?.response) {
@@ -156,14 +152,6 @@ export default function AddMedicine() {
           </div>
 
           <div className="input-box">
-            {/* <span className="details">Type</span>
-            <input
-              type="text"
-              placeholder="enter name"
-              required
-              onChange={(event) => setType(event.target.value)}
-            /> */}
-
             <span className="details">Type</span>
             <select
               className="ok"
@@ -171,9 +159,8 @@ export default function AddMedicine() {
               id="active"
               required
               onChange={(event) =>
-                setType(event.target.options[event.target.selectedIndex].text)
-              }
-            >
+                setType(event.target.options[event.target.selectedIndex].text)}>
+
               <option value="item">Medicine Type</option>
               {datat && datat.map((m) => <option value="item">{m}</option>)}
             </select>
@@ -210,24 +197,15 @@ export default function AddMedicine() {
           </div>
 
           <div className="input-box">
-            {/* <span className="details">Dosage</span>
-            <input
-              type="text"
-              placeholder="enter name"
-              required
-              onChange={(event) => setDosage(event.target.value)}
-            /> */}
-
-            <span className="details">Type</span>
+            <span className="details">Dosage</span>
             <select
               className="ok"
               name="active"
               id="active"
               required
               onChange={(event) =>
-                setDosage(event.target.options[event.target.selectedIndex].text)
-              }
-            >
+                setDosage(event.target.options[event.target.selectedIndex].text)}>
+
               <option value="item">Medicine Dosage</option>
               {datad && datad.map((m) => <option value="item">{m}</option>)}
             </select>
@@ -264,13 +242,6 @@ export default function AddMedicine() {
           </div>
 
           <div className="input-box">
-            {/* <span className="details">Unit</span>
-            <input
-              type="text"
-              placeholder="enter name"
-              required
-              onChange={(event) => setUnit(event.target.value)}
-            /> */}
 
             <span className="details">Unit</span>
             <select
@@ -288,15 +259,6 @@ export default function AddMedicine() {
           </div>
 
           <div className="input-box">
-            {/* <span className="details">Package</span>
-            <input
-              type="text"
-              placeholder="enter name"
-              required
-              onChange={(event) => setPackages(event.target.value)}
-            />
-          </div> */}
-
             <span className="details">Package</span>
             <select
               className="ok"
@@ -305,10 +267,8 @@ export default function AddMedicine() {
               required
               onChange={(event) =>
                 setPackages(
-                  event.target.options[event.target.selectedIndex].text
-                )
-              }
-            >
+                  event.target.options[event.target.selectedIndex].text)}>
+
               <option value="item">Medicine Package</option>
               {datap && datap.map((m) => <option value="item">{m}</option>)}
             </select>
@@ -316,19 +276,19 @@ export default function AddMedicine() {
 
           <div className="input-box">
             <span className="details">Image</span>
-            <input
+            {/* <input
               type="text"
               placeholder="enter name"
               required
               onChange={(event) => setImage(event.target.value)}
-            />
+            /> */}
 
-            {/* <input
+            <input
               type="file"
               id="file"
               accept="image/*"
               onChange={(event) => setImage(event.target.files[0])}
-            /> */}
+            />
           </div>
 
           <div className="input-box">

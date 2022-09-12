@@ -77,6 +77,9 @@ export default function ListType() {
 
   return (
     <div className="container">
+                      <Link to="/addT">
+                      <button> New</button>
+                    </Link>
       <div className="title">List Type</div>
       <br />
       <p

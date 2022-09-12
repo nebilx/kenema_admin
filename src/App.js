@@ -7,6 +7,8 @@ import Overview from "./pages/Overview";
 import { Reports, ReportsOne, ReportsTwo, ReportsThree } from "./pages/Reports";
 
 import AddBatch from "./pages/AddBatch/AddBatch";
+import ListBatch from "./pages/ListBatch/ListBatch";
+import ViewBatch from "./pages/ViewBatch/ViewBatch";
 
 import AddPrescription from "./pages/AddPrescription/AddPrescription";
 
@@ -46,23 +48,48 @@ import EditPatient from "./pages/EditPatient/EditPatient";
 function App() {
   return (
     <Router>
-      <AddBatch />
       <Routes>
+
+        <Route path="/addBa" exact element={<AddBatch />} />
+        <Route path="/listBa" exact element={<ListBatch />} />
+        <Route path="/viewBa" exact element={<ViewBatch />} />
+        {/* <Route path="/editT" exact element={<EditType />} /> */}
+
+        <Route path="/addPr" exact element={<AddPrescription />} />
+        {/* <Route path="/listPr" exact element={<ListBatch />} /> */}
+
+        <Route path="/addT" exact element={<AddType />} />
+        <Route path="/listT" exact element={<ListType />} />
         <Route path="/editT" exact element={<EditType />} />
+
+        <Route path="/addD" exact element={<AddDosage />} />
+        <Route path="/listD" exact element={<ListDosage />} />
         <Route path="/editD" exact element={<EditDosage />} />
+
+        <Route path="/addU" exact element={<AddUnit />} />
+        <Route path="/listU" exact element={<ListUnit />} />
         <Route path="/editU" exact element={<EditUnit />} />
+
+        <Route path="/addB" exact element={<AddBranch />} />
+        <Route path="/listB" exact element={<ListBranch />} />
         <Route path="/editB" exact element={<EditBranch />} />
+
+        <Route path="/addPa" exact element={<AddPatient />} />
+        <Route path="/listPa" exact element={<ListPatient />} />
         <Route path="/editPa" exact element={<EditPatient />} />
+
+        <Route path="/addM" exact element={<AddMedicine />} />
+        <Route path="/listM" exact element={<ListMedicine />} />
         <Route path="/editM" exact element={<EditMedicine />} />
+
+        <Route path="/addPac" exact element={<AddPackage />} />
+        <Route path="/listPac" exact element={<ListPackage />} />
         <Route path="/editPac" exact element={<EditPackage />} />
+
+        <Route path="/addPh" exact element={<AddPharmacist />} />
+        <Route path="/listPh" exact element={<ListPharmacist />} />
         <Route path="/editPh" exact element={<EditPharmacist />} />
-        
-        {/* <Route path="/overview" exact component={Overview} />
-        <Route path="/reports" exact component={AddMedicine} />
-        <Route path="/reports/reports1" exact component={AddPatient} />
-        <Route path="/reports/reports2" exact component={AddBatch} />
-        <Route path="/reports/reports3" exact component={ReportsThree} />
-        <Route path="/team" exact component={AddBranch} /> */}
+
       </Routes>
     </Router>
   );

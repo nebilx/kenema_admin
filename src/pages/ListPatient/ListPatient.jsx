@@ -20,7 +20,7 @@ export default function ListPatient() {
     setIsLoading(true);
     try {
       console.log("id" + id);
-      const response = await axios.delete("http://localhost:4000/type", {
+      const response = await axios.delete("http://localhost:4000/patient", {
         data: { id },
       });
       setIsLoading(false);
@@ -77,7 +77,10 @@ export default function ListPatient() {
 
   return (
     <div className="container">
-      <div className="title">List Type</div>
+       <Link to="/addPa">
+                      <button> New</button>
+                    </Link>
+      <div className="title">List Patient</div>
       <br />
       <p
         ref={errRef}
@@ -116,14 +119,14 @@ export default function ListPatient() {
                   <td>{data.gender}</td>
                   <td>{data.dob}</td>
                   <td>{data.pno}</td>
-                  <td>{data.image}</td>
+                  <td><img src={data.p_image.url}  width="30" height="30"></img></td>
                   <td>{data.address[0].city}</td>
                   <td>{data.address[0].sub_city}</td>
                   <td>{data.address[0].woreda}</td>
                   <td>{data.address[0].house_no}</td>
                   <td>{data.insurance[0].insurance_id}</td>
                   <td>{data.insurance[0].insurance_name}</td>
-                  <td>{data.insurance[0].insurance_image}</td>
+                  <td><img src={data.insurance[0].insurance_image.url}  width="30" height="30"></img></td>
                   <td>{data.user[0].user_name}</td>
                   <td>{data.user[0].user_pwd}</td>
                   <td>{data.user[0].status}</td>

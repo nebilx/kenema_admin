@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
 export default function AddUnit() {
-  //   const navigate = useNavigate();
+    const navigate = useNavigate();
 
   const [uname, setUname] = useState("");
   const [status, setStatus] = useState("");
@@ -29,7 +29,7 @@ export default function AddUnit() {
       setIsLoading(false);
       setErrMsg("Added Successfully");
       console.log(JSON.stringify(response));
-      //   navigate("/users?");
+        navigate("/listU?");
     } catch (err) {
       console.log(err);
       if (!err?.response) {

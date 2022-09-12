@@ -77,6 +77,9 @@ export default function ListMedicine() {
 
   return (
     <div className="container">
+             <Link to="/addM">
+                      <button> New</button>
+                    </Link>
       <div className="title">List Type</div>
       <br />
       <p
@@ -122,7 +125,7 @@ export default function ListMedicine() {
                   <td>{data.strength}</td>
                   <td>{data.unit}</td>
                   <td>{data.package}</td>
-                  <td>{data.image}</td>
+                  <td><img src={data.image.url}  width="30" height="30"></img></td>
                   <td>{data.status}</td>
                   <td>
                     {" "}

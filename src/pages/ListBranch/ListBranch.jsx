@@ -77,6 +77,10 @@ export default function ListBranch() {
 
   return (
     <div className="container">
+      
+<Link to="/addB">
+                      <button> New</button>
+                    </Link>
       <div className="title">List Branch</div>
       <br />
       <p

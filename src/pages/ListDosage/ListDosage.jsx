@@ -77,6 +77,10 @@ export default function ListDosage() {
 
   return (
     <div className="container">
+      
+<Link to="/addD">
+                      <button> New</button>
+                    </Link>
       <div className="title">List Dosage</div>
       <br />
       <p

@@ -77,6 +77,10 @@ export default function ListPackage() {
 
   return (
     <div className="container">
+                <Link to="/addPac">
+                      <button> New</button>
+                    </Link>
+
       <div className="title">List Package</div>
       <br />
       <p

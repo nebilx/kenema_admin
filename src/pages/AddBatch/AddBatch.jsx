@@ -5,42 +5,33 @@ import { useNavigate } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
 export default function AddBatch() {
   //   const navigate = useNavigate();
-  const [storedData , setStoredData] = useState([]);
+  const [medData , setMedData] = useState([]);
   const [drug, setDrug] = useState("");
   const [expire, setExpire] = useState("");
   const [quantity, setQuantity] = useState("");
   const [date, setDate] = useState("");
   const [status, setStatus] = useState("");
 
+  const [mdata, setMdata] = useState("");
+  const [medicine,setMedicine] = useState("");
+
   const [errMsg, setErrMsg] = useState("");
   const errRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
 
-  
-  var bodyFormData = new FormData();
-  bodyFormData.append("date", date);
-  // bodyFormData.append("storedata", JSON.stringify(storedData));
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
+console.log(medData);
     try {
       console.log(date);
-      console.log(storedData);
+      console.log(medData);
       const response = await axios.post(
-        "http://localhost:4000/dosage", 
-        "abebe",
-        // {
-        //   headers: { "Content-Type": "application/json" },
-        //   Authorization: "Bearer " + localStorage.getItem("token"),
-        // }
-         {
-          headers: {
-            "Content-Type": "multipart/form-data",
-        Authorization: "Bearer " + localStorage.getItem("token"),
-     
-        },
+        "http://localhost:4000/batch", 
+       JSON.stringify({batch_date:date, medData }),
+        {
+          headers: { "Content-Type": "application/json" },
+          Authorization: "Bearer " + localStorage.getItem("token"),
         }
       );
       setIsLoading(false);
@@ -62,6 +53,32 @@ export default function AddBatch() {
     }
   };
 
+  useEffect(()=> {
+    const fetchMData = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/medicine", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        });
+
+        console.log(response.data);
+        setMdata(response.data);
+      } catch (err) {
+        if (!err?.response) {
+          setErrMsg("No Server Response");
+        } else if (err.response?.status === 400) {
+          setErrMsg("Missing ");
+        } else {
+          setErrMsg("Failed to Get data");
+        }
+      }
+      setIsLoading(false);
+    };
+    fetchMData();
+  },[])
+
   useEffect(() => {
     if (errMsg.trim() !== "")
       setTimeout(() => {
@@ -82,6 +99,21 @@ export default function AddBatch() {
       >
         {errMsg}
       </p>
+
+      <div className="input-box">
+            <span className="details">Medicine</span>
+            <select
+              className="ok"
+              name="active"
+              id="active"
+              required
+              onChange={(event) =>
+                setMedicine(event.target.options[event.target.selectedIndex].text)}>
+
+              <option value="item">List Medicine</option>
+              {mdata && mdata.map((m) => <option value="item">{m.name}</option>)}
+            </select>
+          </div>
 
       <form onSubmit={handleSubmit}>
 
@@ -130,7 +162,7 @@ export default function AddBatch() {
         <br />
       <br />
       <div className="button">
-        <input value="List" onClick={addRow} id="add" />
+        <input onClick={addRow} id="add" placeholder="list" />
       </div>
 
       <br />
@@ -140,15 +172,24 @@ export default function AddBatch() {
           <tr>
             <th>Drug name</th>
             <th>Expire</th>
-            <th>Qnatity</th>
+            <th>Quantity</th>
           </tr>
         </thead>
         <tbody id="table-body">
-          {storedData.map(row=><tr>
-            {row.map(col=><td>{col}</td>)}
-          </tr>)}
+          {/* {storedData.map(item=>
+          <tr key={item}>
+            {item.map(col=>
+            <td>{col}</td>)}
+          </tr>)} */}
 
-
+{medData.map((item) => (
+  <tr key={item.id}>
+   <td>{item.medname}</td> 
+   <td>{item.medexpire}</td>
+   <td>{item.medquantity}</td>
+<td><button onClick={() => deletemed(item.id)}>X</button></td>
+  </tr>
+))}
           
         </tbody>
       </table>
@@ -162,7 +203,22 @@ export default function AddBatch() {
     </div>
   );
 
+  function deletemed (id) {
+    // Filter out todo with the id
+    const newList = medData.filter((item) => item.id !== id);
+
+    setMedData(newList);
+  };
+
   function addRow() {
-    setStoredData([...storedData,[drug,expire,quantity]])
+
+    const medD = {
+      id: Math.random(),
+      medname: drug,
+      medexpire:expire,
+      medquantity:quantity,
+    }
+
+    setMedData([...medData,medD]);
   }
 }

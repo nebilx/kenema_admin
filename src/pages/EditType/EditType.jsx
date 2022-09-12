@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
 export default function EditType() {
-  //   const navigate = useNavigate();
+   const navigate = useNavigate();
   const location = useLocation();
   const id = location.state;
   console.log(id);
@@ -15,6 +15,31 @@ export default function EditType() {
   const [errMsg, setErrMsg] = useState("");
   const errRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/type", id);
+
+        console.log(response.data);
+
+        setTname(response.data[0].type_name);
+        setStatus(response.data[0].status);
+      } catch (err) {
+        if (!err?.response) {
+          setErrMsg("No Server Response");
+        } else if (err.response?.status === 400) {
+          setErrMsg("Missing ");
+        } else {
+          setErrMsg("Failed to Get data");
+        }
+      }
+      setIsLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
 
   const handleUpdate = async (e) => {
     e.preventDefault();

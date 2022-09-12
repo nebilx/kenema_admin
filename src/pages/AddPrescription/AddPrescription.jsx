@@ -1,108 +1,247 @@
-// export default function x() {
-//   return (
-//     <div>
-//       Item:
-//       <input type="text" name="item" id="item" />
-//       <br />
-//       Quantity:
-//       <input type="text" name="quantity" id="quantity" />
-//       <br />
-//       Price: AUD
-//       <input type="text" name="price" id="price" />
-//       <br />
-//       <br />
-//       <div className="button">
-//         <input type="submit" value="Add" onClick={addRow} id="add" />
-//       </div>
-//       <br />
-//       <br />
-//       <table id="table" border="1">
-//         <thead id="table-head">
-//           <tr>
-//             <th>Item</th>
-//             <th>Quantity</th>
-//             <th>Price</th>
-//           </tr>
-//         </thead>
-//         <tbody id="table-body"></tbody>
-//       </table>
-//       console.log(tableBody);
-//     </div>
-//   );
-// }
-
-// function addRow() {
-//   var tableBody = document.getElementById("table-body");
-//   var td1 = document.createElement("td");
-//   var td2 = document.createElement("td");
-//   var td3 = document.createElement("td");
-//   var row = document.createElement("tr");
-
-//   td1.innerHTML = document.getElementById("item").value;
-//   td2.innerHTML = document.getElementById("quantity").value;
-//   td3.innerHTML = document.getElementById("price").value;
-
-//   row.appendChild(td1);
-//   row.appendChild(td2);
-//   row.appendChild(td3);
-
-//   tableBody.appendChild(row);
-// }
-
-
-import { useState } from 'react';
+import "./AddPrescription.css"
+import axios from "axios";
+import { useState, useRef, useEffect } from "react";
 export default function Xtest() {
-  const [storedData , setStoredData] = useState([]);
-  const [item,setItem] = useState("");
-  const [quantity,setQuantity] = useState("");
-  const [price,setPrice] = useState("");
+  const [medData , setMedData] = useState([]);
+  const [drug, setDrug] = useState("");
+  const [expire, setExpire] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [date, setDate] = useState("");
   
-  function finished() {
-    // this thing only print the first element 
-      alert(storedData[0] ?? "no data found");
-      console.log(storedData.map(t => {
-        console.log(t);
-      }) ?? "no data found");
+  const [pdata, setPdata] = useState("");
+  const [patient,setPatient] = useState("");
+
+  const [mdata, setMdata] = useState("");
+  const [medicine,setMedicine] = useState("");
+
+  const [errMsg, setErrMsg] = useState("");
+  const errRef = useRef();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+console.log(medData);
+    try {
+      console.log(date);
+      console.log(medData);
+      const response = await axios.post(
+        "http://localhost:4000/prescription", 
+       JSON.stringify({date, medData }),
+        {
+          headers: { "Content-Type": "application/json" },
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        }
+      );
+      setIsLoading(false);
+      setErrMsg("Added Successfully");
+      console.log(JSON.stringify(response));
+      //   navigate("/users?");
+    } catch (err) {
+      console.log(err);
+      if (!err?.response) {
+        setIsLoading(false);
+        setErrMsg("No Server Response");
+      } else if (err.response?.status === 400) {
+        setIsLoading(false);
+        setErrMsg("Missing ");
+      } else {
+        setIsLoading(false);
+        setErrMsg("Adding Failed");
+      }
     }
-    
-    function addRow() {
-      setStoredData([...storedData,[item,quantity,price]])
-    }
+  };
+
+
+  useEffect(() => {
+    const fetchPData = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/patient", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        });
+
+        console.log(response.data);
+        setPdata(response.data);
+      } catch (err) {
+        if (!err?.response) {
+          setErrMsg("No Server Response");
+        } else if (err.response?.status === 400) {
+          setErrMsg("Missing ");
+        } else {
+          setErrMsg("Failed to Get data");
+        }
+      }
+      setIsLoading(false);
+    };
+
+    const fetchMData = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/medicine", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        });
+
+        console.log(response.data);
+        setMdata(response.data);
+      } catch (err) {
+        if (!err?.response) {
+          setErrMsg("No Server Response");
+        } else if (err.response?.status === 400) {
+          setErrMsg("Missing ");
+        } else {
+          setErrMsg("Failed to Get data");
+        }
+      }
+      setIsLoading(false);
+    };
+
+    fetchPData();
+    fetchMData();
+  }, []);
     
   return (
     <div>
-      Item:
-      <input type="text" name="item" value={item} onChange={(e)=>setItem(e.target.value)} id="item" />
-      <br />
-      Quantity:
-      <input type="text" name="quantity" value={quantity} onChange={(e)=>setQuantity(e.target.value)} id="quantity" />
-      <br />
-      Price: AUD
-      <input type="text" name="price" value={price} onChange={(e)=>setPrice(e.target.value)} id="price" />
-      <br />
-      <br />
-      <div className="button">
-        <input type="submit" value="Add" onClick={addRow} id="add" />
-      </div>
-      <br />
-      <br />
-      <table id="table" border="1">
-        <thead id="table-head">
-          <tr>
-            <th>Item</th>
-            <th>Quantity</th>
-            <th>Price</th>
-          </tr>
-        </thead>
-        <tbody id="table-body">
-          {storedData.map(row=><tr>
-            {row.map(col=><td>{col}</td>)}
-          </tr>)}
-        </tbody>
-      </table>
-      <div className="button">
-        <input type="submit" value="Print" onClick={finished} id="add" />
-      </div>
+
+<div className="input-box">
+            <span className="details">Patient</span>
+            <select
+              className="ok"
+              name="active"
+              id="active"
+              required
+              onChange={(event) =>
+                setPatient(event.target.options[event.target.selectedIndex].text)}>
+
+              <option value="item">List Patient</option>
+              {pdata && pdata.map((m) => <option value="item">{m.name}</option>)}
+            </select>
+          </div>
+
+<br/>
+<div className="input-box">
+            <span className="details">Medicine</span>
+            <select
+              className="ok"
+              name="active"
+              id="active"
+              required
+              onChange={(event) =>
+                setMedicine(event.target.options[event.target.selectedIndex].text)}>
+
+              <option value="item">List Medicine</option>
+              {mdata && mdata.map((m) => <option value="item">{m.name}</option>)}
+            </select>
+          </div>
+
+          <form onSubmit={handleSubmit}>
+
+<div className="input-box">
+      <span className="details">Date</span>
+      <input
+        type="text"
+        placeholder="enter date"
+        onChange={(event) => setDate(event.target.value)}
+      />
     </div>
-  );
+
+
+  <div className="branch-detail">
+    <div className="input-box">
+      <span className="details">Name</span>
+      <input
+        type="text"
+        placeholder="enter Drug name"
+
+        onChange={(event) => setDrug(event.target.value)}
+      />
+    </div>
+
+    <div className="input-box">
+      <span className="details">Expire</span>
+      <input
+        type="text"
+        placeholder="enter Drug expire "
+        onChange={(event) => setExpire(event.target.value)}
+      />
+    </div>
+
+    <div className="input-box">
+      <span className="details">Quantity</span>
+      <input
+        type="text"
+        placeholder="enter Drug quantity"
+        onChange={(event) => setQuantity(event.target.value)}
+      />
+    </div>
+
+   
+  </div>
+
+  <br />
+<br />
+<div className="button">
+  <input onClick={addRow} id="add" placeholder="list" />
+</div>
+
+<br />
+<br />
+<table id="table" border="1">
+  <thead id="table-head">
+    <tr>
+      <th>Drug name</th>
+      <th>Expire</th>
+      <th>Quantity</th>
+    </tr>
+  </thead>
+  <tbody id="table-body">
+    {/* {storedData.map(item=>
+    <tr key={item}>
+      {item.map(col=>
+      <td>{col}</td>)}
+    </tr>)} */}
+
+{medData.map((item) => (
+<tr key={item.id}>
+<td>{item.medname}</td> 
+<td>{item.medexpire}</td>
+<td>{item.medquantity}</td>
+<td><button onClick={() => deletemed(item.id)}>X</button></td>
+</tr>
+))}
+    
+  </tbody>
+</table>
+
+
+
+  <div className="button">
+    <input type="submit" value="Add" />
+  </div>
+</form>
+</div>
+);
+
+function deletemed (id) {
+// Filter out todo with the id
+const newList = medData.filter((item) => item.id !== id);
+
+setMedData(newList);
+};
+
+function addRow() {
+
+const medD = {
+id: Math.random(),
+medname: drug,
+medexpire:expire,
+medquantity:quantity,
+}
+
+setMedData([...medData,medD]);
+}
 }

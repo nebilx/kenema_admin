@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
 export default function EditMedicine() {
-  //   const navigate = useNavigate();
+  const navigate = useNavigate();
   const location = useLocation();
   const id = location.state;
   console.log(id);
@@ -27,6 +27,11 @@ export default function EditMedicine() {
   const [errMsg, setErrMsg] = useState("");
   const errRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
+
+  const [datap, setDatap] = useState([]);
+  const [datad, setDatad] = useState([]);
+  const [datat, setDatat] = useState([]);
+  const [datau, setDatau] = useState([]);
 
   var bodyFormData = new FormData();
   bodyFormData.append("id", id);
@@ -64,8 +69,9 @@ export default function EditMedicine() {
         setStrength(response.data[0].strength);
         setUnit(response.data[0].unit);
         setPackages(response.data[0].package);
-        setImage(response.data[0].image);
+        setImage(response.data[0].image.url);
         setStatus(response.data[0].status);
+
       } catch (err) {
         if (!err?.response) {
           setErrMsg("No Server Response");
@@ -78,7 +84,33 @@ export default function EditMedicine() {
       setIsLoading(false);
     };
 
+    const fetchMC = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/medcontent", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        });
+
+        setDatap(response.data.package.map((d) => d.package_name));
+        setDatad(response.data.dosage.map((d) => d.dosage_name));
+        setDatat(response.data.type.map((d) => d.type_name));
+        setDatau(response.data.unit.map((d) => d.unit_name));
+
+      } catch (err) {
+        if (!err?.response) {
+          setErrMsg("No Server Response");
+        } else if (err.response?.status === 400) {
+          setErrMsg("Missing ");
+        } else {
+          setErrMsg("Failed to Get data");
+        }
+      }
+    };
+
     fetchData();
+    fetchMC();
   }, []);
 
   const handleUpdate = async (e) => {
@@ -99,7 +131,7 @@ export default function EditMedicine() {
       setIsLoading(false);
       setErrMsg("Updated Successfully");
       console.log(JSON.stringify(response));
-      //   navigate("/users?");
+        navigate("/listM?");
     } catch (err) {
       console.log(err);
       if (!err?.response) {
@@ -162,13 +194,19 @@ export default function EditMedicine() {
 
           <div className="input-box">
             <span className="details">Type</span>
-            <input
-              type="text"
-              placeholder="enter name"
+            <br/>
+            <span className="details">{type}</span>
+            <select
+              className="ok"
+              name="active"
+              id="active"
               required
-              value={type}
-              onChange={(event) => setType(event.target.value)}
-            />
+              onChange={(event) =>
+                setType(event.target.options[event.target.selectedIndex].text)}>
+
+              <option value="item">Medicine Type</option>
+              {datat && datat.map((m) => <option value="item">{m}</option>)}
+            </select>
           </div>
 
           <div className="input-box">
@@ -206,13 +244,19 @@ export default function EditMedicine() {
 
           <div className="input-box">
             <span className="details">Dosage</span>
-            <input
-              type="text"
-              placeholder="enter name"
+            <br/>
+            <span className="details">{dosage}</span>
+            <select
+              className="ok"
+              name="active"
+              id="active"
               required
-              value={dosage}
-              onChange={(event) => setDosage(event.target.value)}
-            />
+              onChange={(event) =>
+                setDosage(event.target.options[event.target.selectedIndex].text)}>
+
+              <option value="item">Medicine Dosage</option>
+              {datad && datad.map((m) => <option value="item">{m}</option>)}
+            </select>
           </div>
 
           <div className="input-box">
@@ -250,34 +294,49 @@ export default function EditMedicine() {
 
           <div className="input-box">
             <span className="details">Unit</span>
-            <input
-              type="text"
-              placeholder="enter name"
+            <br/>
+            <span className="details">{unit}</span>
+            <select
+              className="ok"
+              name="active"
+              id="active"
               required
-              value={unit}
-              onChange={(event) => setUnit(event.target.value)}
-            />
+              onChange={(event) =>
+                setUnit(event.target.options[event.target.selectedIndex].text)
+              }
+            >
+              <option value="item">Medicine Unit</option>
+              {datau && datau.map((m) => <option value="item">{m}</option>)}
+            </select>
           </div>
 
           <div className="input-box">
             <span className="details">Package</span>
-            <input
-              type="text"
-              placeholder="enter name"
+            <br/>
+            <span className="details">{packages}</span>
+            <select
+              className="ok"
+              name="active"
+              id="active"
               required
-              value={packages}
-              onChange={(event) => setPackages(event.target.value)}
-            />
+              onChange={(event) =>
+                setPackages(
+                  event.target.options[event.target.selectedIndex].text)}>
+
+              <option value="item">Medicine Package</option>
+              {datap && datap.map((m) => <option value="item">{m}</option>)}
+            </select>
           </div>
 
           <div className="input-box">
             <span className="details">Image</span>
+            <br/>
+            <img src={image}  width="30" height="30"></img>
             <input
-              type="text"
-              placeholder="enter name"
-              required
-              value={image}
-              onChange={(event) => setImage(event.target.value)}
+              type="file"
+              id="file"
+              accept="image/*"
+              onChange={(event) => setImage(event.target.files[0])}
             />
           </div>
 

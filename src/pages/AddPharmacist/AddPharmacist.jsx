@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
 export default function AddPharmacist() {
-  //   const navigate = useNavigate();
+    const navigate = useNavigate();
 
   const [name, setName] = useState("");
   const [p_pwd,setP_pwd] = useState("");
@@ -39,7 +39,7 @@ export default function AddPharmacist() {
       setIsLoading(false);
       setErrMsg("Added Successfully");
       console.log(JSON.stringify(response));
-      //   navigate("/users?");
+         navigate("/listPh?");
     } catch (err) {
       console.log(err);
       if (!err?.response) {

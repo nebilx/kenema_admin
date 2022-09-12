@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
 export default function EditPackage() {
-  //   const navigate = useNavigate();
+     const navigate = useNavigate();
   const location = useLocation();
   const id = location.state;
   console.log(id);
@@ -56,7 +56,7 @@ export default function EditPackage() {
       setIsLoading(false);
       setErrMsg("Updated Successfully");
       console.log(JSON.stringify(response));
-      //   navigate("/users?");
+         navigate("/listPac?");
     } catch (err) {
       console.log(err);
       if (!err?.response) {

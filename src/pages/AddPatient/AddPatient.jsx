@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
 export default function NewPatient() {
-  //   const navigate = useNavigate();
+    const navigate = useNavigate();
 
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
@@ -33,7 +33,7 @@ export default function NewPatient() {
   bodyFormData.append("gender", gender);
   bodyFormData.append("dob", dob);
   bodyFormData.append("pno", pno);
-  bodyFormData.append("image", image);
+  bodyFormData.append("p_image", image);
   bodyFormData.append("city", city);
   bodyFormData.append("sub_city", sub_city);
   bodyFormData.append("woreda", woreda);
@@ -62,7 +62,7 @@ export default function NewPatient() {
       setIsLoading(false);
       setErrMsg("Added Successfully");
       console.log(JSON.stringify(response));
-      //   navigate("/users?");
+         navigate("/listPa?");
     } catch (err) {
       console.log(err);
       if (!err?.response) {

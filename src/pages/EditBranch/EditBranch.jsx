@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
 export default function EditBranch() {
-  //   const navigate = useNavigate();
+    const navigate = useNavigate();
   const location = useLocation();
   const id = location.state;
   console.log(id);
@@ -60,7 +60,7 @@ export default function EditBranch() {
       setIsLoading(false);
       setErrMsg("Updated Successfully");
       console.log(JSON.stringify(response));
-      //   navigate("/users?");
+        navigate("/listB?");
     } catch (err) {
       console.log(err);
       if (!err?.response) {
