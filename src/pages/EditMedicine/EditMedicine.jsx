@@ -14,9 +14,7 @@ export default function EditMedicine() {
   const [type, setType] = useState("");
   const [mfg, setMfg] = useState("");
   const [generic_name, setGeneric_name] = useState("");
-  const [date_mfg, setDate_mfg] = useState("");
   const [dosage, setDosage] = useState("");
-  const [date_expire, setDate_expire] = useState("");
   const [price, setPrice] = useState("");
   const [strength, setStrength] = useState("");
   const [unit, setUnit] = useState("");
@@ -40,9 +38,7 @@ export default function EditMedicine() {
   bodyFormData.append("type", type);
   bodyFormData.append("mfg", mfg);
   bodyFormData.append("generic_name", generic_name);
-  bodyFormData.append("date_mfg", date_mfg);
   bodyFormData.append("dosage", dosage);
-  bodyFormData.append("date_expire", date_expire);
   bodyFormData.append("price", price);
   bodyFormData.append("strength", strength);
   bodyFormData.append("unit", unit);
@@ -53,25 +49,24 @@ export default function EditMedicine() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/medicine", id);
+        const response = await axios.get(
+          `http://localhost:4000/medicine/${id}`
+        );
 
         console.log(response.data);
 
-        setMid(response.data[0].medicine_id);
-        setName(response.data[0].name);
-        setType(response.data[0].type);
-        setMfg(response.data[0].mfg);
-        setGeneric_name(response.data[0].generic_name);
-        setDate_mfg(response.data[0].date_mfg);
-        setDosage(response.data[0].dosage);
-        setDate_expire(response.data[0].date_expire);
-        setPrice(response.data[0].price);
-        setStrength(response.data[0].strength);
-        setUnit(response.data[0].unit);
-        setPackages(response.data[0].package);
-        setImage(response.data[0].image.url);
-        setStatus(response.data[0].status);
-
+        setMid(response.data.medicine_id);
+        setName(response.data.name);
+        setType(response.data.type);
+        setMfg(response.data.mfg);
+        setGeneric_name(response.data.generic_name);
+        setDosage(response.data.dosage);
+        setPrice(response.data.price);
+        setStrength(response.data.strength);
+        setUnit(response.data.unit);
+        setPackages(response.data.package);
+        setImage(response.data.image.url);
+        setStatus(response.data.status);
       } catch (err) {
         if (!err?.response) {
           setErrMsg("No Server Response");
@@ -97,7 +92,6 @@ export default function EditMedicine() {
         setDatad(response.data.dosage.map((d) => d.dosage_name));
         setDatat(response.data.type.map((d) => d.type_name));
         setDatau(response.data.unit.map((d) => d.unit_name));
-
       } catch (err) {
         if (!err?.response) {
           setErrMsg("No Server Response");
@@ -131,7 +125,7 @@ export default function EditMedicine() {
       setIsLoading(false);
       setErrMsg("Updated Successfully");
       console.log(JSON.stringify(response));
-        navigate("/listM?");
+      navigate("/listM?");
     } catch (err) {
       console.log(err);
       if (!err?.response) {
@@ -193,17 +187,18 @@ export default function EditMedicine() {
           </div>
 
           <div className="input-box">
-            <span className="details">Type</span>
-            <br/>
+            <span className="details">Type :</span>
             <span className="details">{type}</span>
+            <br />
             <select
               className="ok"
               name="active"
               id="active"
               required
               onChange={(event) =>
-                setType(event.target.options[event.target.selectedIndex].text)}>
-
+                setType(event.target.options[event.target.selectedIndex].text)
+              }
+            >
               <option value="item">Medicine Type</option>
               {datat && datat.map((m) => <option value="item">{m}</option>)}
             </select>
@@ -232,42 +227,21 @@ export default function EditMedicine() {
           </div>
 
           <div className="input-box">
-            <span className="details">Date Manufacture</span>
-            <input
-              type="text"
-              placeholder="enter name"
-              required
-              value={date_mfg}
-              onChange={(event) => setDate_mfg(event.target.value)}
-            />
-          </div>
-
-          <div className="input-box">
-            <span className="details">Dosage</span>
-            <br/>
+            <span className="details">Dosage :</span>
             <span className="details">{dosage}</span>
+            <br />
             <select
               className="ok"
               name="active"
               id="active"
               required
               onChange={(event) =>
-                setDosage(event.target.options[event.target.selectedIndex].text)}>
-
+                setDosage(event.target.options[event.target.selectedIndex].text)
+              }
+            >
               <option value="item">Medicine Dosage</option>
               {datad && datad.map((m) => <option value="item">{m}</option>)}
             </select>
-          </div>
-
-          <div className="input-box">
-            <span className="details">Date Expire</span>
-            <input
-              type="text"
-              placeholder="enter name"
-              required
-              value={date_expire}
-              onChange={(event) => setDate_expire(event.target.value)}
-            />
           </div>
 
           <div className="input-box">
@@ -293,9 +267,9 @@ export default function EditMedicine() {
           </div>
 
           <div className="input-box">
-            <span className="details">Unit</span>
-            <br/>
+            <span className="details">Unit :</span>
             <span className="details">{unit}</span>
+            <br />
             <select
               className="ok"
               name="active"
@@ -311,9 +285,9 @@ export default function EditMedicine() {
           </div>
 
           <div className="input-box">
-            <span className="details">Package</span>
-            <br/>
+            <span className="details">Package :</span>
             <span className="details">{packages}</span>
+            <br />
             <select
               className="ok"
               name="active"
@@ -321,17 +295,19 @@ export default function EditMedicine() {
               required
               onChange={(event) =>
                 setPackages(
-                  event.target.options[event.target.selectedIndex].text)}>
-
+                  event.target.options[event.target.selectedIndex].text
+                )
+              }
+            >
               <option value="item">Medicine Package</option>
               {datap && datap.map((m) => <option value="item">{m}</option>)}
             </select>
           </div>
 
           <div className="input-box">
-            <span className="details">Image</span>
-            <br/>
-            <img src={image}  width="30" height="30"></img>
+            <span className="details">Image :</span>
+            <img src={image} width="30" height="30"></img>
+            <br />
             <input
               type="file"
               id="file"
@@ -341,14 +317,22 @@ export default function EditMedicine() {
           </div>
 
           <div className="input-box">
-            <span className="details">Status</span>
-            <input
-              type="text"
-              placeholder="enter status"
+            <span className="details">Status :</span>
+            <span className="details">{status}</span>
+            <br />
+            <select
+              className="ok"
+              name="active"
+              id="active"
               required
-              value={status}
-              onChange={(event) => setStatus(event.target.value)}
-            />
+              onChange={(event) =>
+                setStatus(event.target.options[event.target.selectedIndex].text)
+              }
+            >
+              <option value="item">Status</option>
+              <option value="item">active</option>
+              <option value="item">Deactivate</option>
+            </select>
           </div>
         </div>
 

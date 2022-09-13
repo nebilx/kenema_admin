@@ -20,12 +20,9 @@ export default function ListBranch() {
     setIsLoading(true);
     try {
       console.log("id" + id);
-      const response = await axios.delete(
-        "http://localhost:4000/batch",
-        {
-          data: { id },
-        }
-      );
+      const response = await axios.delete("http://localhost:4000/batch", {
+        data: { id },
+      });
       setIsLoading(false);
       setErrMsg("Deleted Successfully");
       console.log(JSON.stringify(response));
@@ -48,15 +45,12 @@ export default function ListBranch() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:4000/batch",
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + localStorage.getItem("token"),
-            },
-          }
-        );
+        const response = await axios.get("http://localhost:4000/batch", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        });
 
         console.log(response.data);
         setData(response.data);
@@ -74,7 +68,6 @@ export default function ListBranch() {
     fetchData();
   }, []);
 
-
   useEffect(() => {
     if (errMsg.trim() !== "")
       setTimeout(() => {
@@ -84,7 +77,11 @@ export default function ListBranch() {
 
   return (
     <div className="container">
-      <div className="title">List Branch</div>
+      <Link to="/addBa">
+        <button> New</button>
+      </Link>
+
+      <div className="title">List Batch</div>
       <br />
       <p
         ref={errRef}
@@ -93,7 +90,6 @@ export default function ListBranch() {
       >
         {errMsg}
       </p>
-
 
       <table>
         <tbody>
@@ -108,9 +104,12 @@ export default function ListBranch() {
                 <tr key={data._id}>
                   <td>{data.batch_date}</td>
                   <td>{data.batch_medicine.length}</td>
-                  <td> <Link to="/viewBa" state={data._id}>
-                    <button> View</button>
-                  </Link></td>
+                  <td>
+                    {" "}
+                    <Link to="/viewBa" state={data._id}>
+                      <button> View</button>
+                    </Link>
+                  </td>
                   <td>
                     {" "}
                     <Link to="/editB" state={data._id}>

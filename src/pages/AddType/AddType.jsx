@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
 export default function AddType() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [Tname, setTname] = useState("");
   const [status, setStatus] = useState("");
@@ -29,7 +29,7 @@ export default function AddType() {
       setIsLoading(false);
       setErrMsg("Added Successfully");
       console.log(JSON.stringify(response));
-         navigate("/listT?");
+      navigate("/listT?");
     } catch (err) {
       console.log(err);
       if (!err?.response) {
@@ -80,12 +80,19 @@ export default function AddType() {
 
           <div className="input-box">
             <span className="details">Status</span>
-            <input
-              type="text"
-              placeholder="enter Address"
+            <select
+              className="ok"
+              name="active"
+              id="active"
               required
-              onChange={(event) => setStatus(event.target.value)}
-            />
+              onChange={(event) =>
+                setStatus(event.target.options[event.target.selectedIndex].text)
+              }
+            >
+              <option value="item">Status</option>
+              <option value="item">active</option>
+              <option value="item">Deactivate</option>
+            </select>
           </div>
         </div>
 

@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
 export default function EditBranch() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const location = useLocation();
   const id = location.state;
   console.log(id);
@@ -21,14 +21,14 @@ export default function EditBranch() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/branch", id);
+        const response = await axios.get(`http://localhost:4000/branch/${id}`);
 
         console.log(response.data);
 
-        setName(response.data[0].name);
-        setPno(response.data[0].pno);
-        setAddress(response.data[0].address);
-        setStatus(response.data[0].status);
+        setName(response.data.name);
+        setPno(response.data.pno);
+        setAddress(response.data.address);
+        setStatus(response.data.status);
       } catch (err) {
         if (!err?.response) {
           setErrMsg("No Server Response");
@@ -60,7 +60,7 @@ export default function EditBranch() {
       setIsLoading(false);
       setErrMsg("Updated Successfully");
       console.log(JSON.stringify(response));
-        navigate("/listB?");
+      navigate("/listB?");
     } catch (err) {
       console.log(err);
       if (!err?.response) {
@@ -130,14 +130,22 @@ export default function EditBranch() {
             />
           </div>
           <div className="input-box">
-            <span className="details">Status</span>
-            <input
-              type="text"
-              placeholder="enter Status"
+            <span className="details">Status :</span>
+            <span className="details">{status}</span>
+            <br />
+            <select
+              className="ok"
+              name="active"
+              id="active"
               required
-              value={status}
-              onChange={(event) => setStatus(event.target.value)}
-            />
+              onChange={(event) =>
+                setStatus(event.target.options[event.target.selectedIndex].text)
+              }
+            >
+              <option value="item">Status</option>
+              <option value="item">active</option>
+              <option value="item">Deactivate</option>
+            </select>
           </div>
         </div>
 

@@ -77,9 +77,9 @@ export default function ListMedicine() {
 
   return (
     <div className="container">
-             <Link to="/addM">
-                      <button> New</button>
-                    </Link>
+      <Link to="/addM">
+        <button> New</button>
+      </Link>
       <div className="title">List Type</div>
       <br />
       <p
@@ -98,9 +98,7 @@ export default function ListMedicine() {
             <td>Type</td>
             <td>Manufacture</td>
             <td>Generic Name</td>
-            <td>Date Manufacture</td>
             <td>Dosage</td>
-            <td>Date Expire</td>
             <td>Price</td>
             <td>Strength</td>
             <td>Unit</td>
@@ -118,14 +116,14 @@ export default function ListMedicine() {
                   <td>{data.type}</td>
                   <td>{data.mfg}</td>
                   <td>{data.generic_name}</td>
-                  <td>{data.date_mfg}</td>
                   <td>{data.dosage}</td>
-                  <td>{data.date_expire}</td>
                   <td>{data.price}</td>
                   <td>{data.strength}</td>
                   <td>{data.unit}</td>
                   <td>{data.package}</td>
-                  <td><img src={data.image.url}  width="30" height="30"></img></td>
+                  <td>
+                    <img src={data.image.url} width="30" height="30"></img>
+                  </td>
                   <td>{data.status}</td>
                   <td>
                     {" "}

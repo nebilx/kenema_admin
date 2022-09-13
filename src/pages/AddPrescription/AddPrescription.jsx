@@ -1,33 +1,52 @@
-import "./AddPrescription.css"
+import "./AddPrescription.css";
 import axios from "axios";
 import { useState, useRef, useEffect } from "react";
 export default function Xtest() {
-  const [medData , setMedData] = useState([]);
+  const [medData, setMedData] = useState([]);
   const [drug, setDrug] = useState("");
   const [expire, setExpire] = useState("");
   const [quantity, setQuantity] = useState("");
   const [date, setDate] = useState("");
-  
+
   const [pdata, setPdata] = useState("");
-  const [patient,setPatient] = useState("");
+  const [patient, setPatient] = useState("");
 
   const [mdata, setMdata] = useState("");
-  const [medicine,setMedicine] = useState("");
+  const [medicine, setMedicine] = useState("");
+
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
+  const [gender, setGender] = useState("");
+  const [dob, setDob] = useState("");
+  const [pno, setPno] = useState("");
+  const [image, setImage] = useState("");
+  const [city, setCity] = useState("");
+  const [sub_city, setSub_city] = useState("");
+  const [woreda, setWoreda] = useState("");
+  const [house_no, setHouse_no] = useState("");
+  const [i_id, setI_id] = useState("");
+  const [i_name, setI_name] = useState("");
+  const [i_image, setI_image] = useState("");
+  const [u_name, setU_name] = useState("");
+  const [u_pwd, setU_pwd] = useState("");
+  const [status, setStatus] = useState("");
 
   const [errMsg, setErrMsg] = useState("");
   const errRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
 
+  console.log(patient);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-console.log(medData);
+    console.log(medData);
     try {
       console.log(date);
       console.log(medData);
       const response = await axios.post(
-        "http://localhost:4000/prescription", 
-       JSON.stringify({date, medData }),
+        "http://localhost:4000/prescription",
+        JSON.stringify({ date, medData }),
         {
           headers: { "Content-Type": "application/json" },
           Authorization: "Bearer " + localStorage.getItem("token"),
@@ -51,7 +70,6 @@ console.log(medData);
       }
     }
   };
-
 
   useEffect(() => {
     const fetchPData = async () => {
@@ -103,145 +121,188 @@ console.log(medData);
     fetchPData();
     fetchMData();
   }, []);
-    
+
+  useEffect(() => {
+    const fetchPData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:4000/patient/${patient}`
+        );
+
+        console.log(response.data);
+
+        setName(response.data.name);
+        setAge(response.data.age);
+        setGender(response.data.gender);
+        setDob(response.data.dob);
+        setPno(response.data.pno);
+        setImage(response.data.p_image.url);
+        setCity(response.data.address[0].city);
+        setSub_city(response.data.address[0].sub_city);
+        setWoreda(response.data.address[0].woreda);
+        setHouse_no(response.data.address[0].house_no);
+
+        setI_id(response.data.insurance[0].insurance_id);
+        setI_name(response.data.insurance[0].insurance_name);
+      } catch (err) {
+        if (!err?.response) {
+          setErrMsg("No Server Response");
+        } else if (err.response?.status === 400) {
+          setErrMsg("Missing ");
+        } else {
+          setErrMsg("Failed to Get data");
+        }
+      }
+      setIsLoading(false);
+    };
+
+    fetchPData();
+  }, [patient]);
+
   return (
     <div>
+      <div className="input-box">
+        <span className="details">Patient</span>
+        <select
+          className="ok"
+          name="active"
+          id="active"
+          required
+          onChange={(event) =>
+            setPatient(event.target.options[event.target.selectedIndex].value)
+          }
+        >
+          <option value="item">List Patient</option>
+          {pdata &&
+            pdata.map((m) => <option value={`${m._id}`}>{m.name}</option>)}
+        </select>
+      </div>
+      <span className="details">Patient Info</span> <br />
+      <span className="details">Name : {name}</span> <br />
+      <span className="details">Age : {age}</span> <br />
+      <span className="details">Gender : {gender}</span> <br />
+      <span className="details">Date of Birth : {dob}</span> <br />
+      <span className="details">Phone Number : {pno}</span> <br />
+      <span className="details">
+        Address : {`${city},${sub_city},${woreda},${house_no}`}
+      </span>{" "}
+      <br />
+      <span className="details">Insurance Info</span> <br />
+      <span className="details">Insurance Id : {i_id}</span> <br />
+      <span className="details">Insurance Name : {i_name}</span> <br />
+      <br />
+      <div className="input-box">
+        <span className="details">Medicine</span>
+        <select
+          className="ok"
+          name="active"
+          id="active"
+          required
+          onChange={(event) =>
+            setMedicine(event.target.options[event.target.selectedIndex].text)
+          }
+        >
+          <option value="item">List Medicine</option>
+          {mdata && mdata.map((m) => <option value="item">{m.name}</option>)}
+        </select>
+      </div>
+      <form onSubmit={handleSubmit}>
+        <div className="input-box">
+          <span className="details">Date</span>
+          <input
+            type="text"
+            placeholder="enter date"
+            onChange={(event) => setDate(event.target.value)}
+          />
+        </div>
 
-<div className="input-box">
-            <span className="details">Patient</span>
-            <select
-              className="ok"
-              name="active"
-              id="active"
-              required
-              onChange={(event) =>
-                setPatient(event.target.options[event.target.selectedIndex].text)}>
-
-              <option value="item">List Patient</option>
-              {pdata && pdata.map((m) => <option value="item">{m.name}</option>)}
-            </select>
+        <div className="branch-detail">
+          <div className="input-box">
+            <span className="details">Name</span>
+            <input
+              type="text"
+              placeholder="enter Drug name"
+              onChange={(event) => setDrug(event.target.value)}
+            />
           </div>
 
-<br/>
-<div className="input-box">
-            <span className="details">Medicine</span>
-            <select
-              className="ok"
-              name="active"
-              id="active"
-              required
-              onChange={(event) =>
-                setMedicine(event.target.options[event.target.selectedIndex].text)}>
-
-              <option value="item">List Medicine</option>
-              {mdata && mdata.map((m) => <option value="item">{m.name}</option>)}
-            </select>
+          <div className="input-box">
+            <span className="details">Expire</span>
+            <input
+              type="text"
+              placeholder="enter Drug expire "
+              onChange={(event) => setExpire(event.target.value)}
+            />
           </div>
 
-          <form onSubmit={handleSubmit}>
+          <div className="input-box">
+            <span className="details">Quantity</span>
+            <input
+              type="text"
+              placeholder="enter Drug quantity"
+              onChange={(event) => setQuantity(event.target.value)}
+            />
+          </div>
+        </div>
 
-<div className="input-box">
-      <span className="details">Date</span>
-      <input
-        type="text"
-        placeholder="enter date"
-        onChange={(event) => setDate(event.target.value)}
-      />
-    </div>
+        <br />
+        <br />
+        <div className="button">
+          <input onClick={addRow} id="add" placeholder="list" />
+        </div>
 
-
-  <div className="branch-detail">
-    <div className="input-box">
-      <span className="details">Name</span>
-      <input
-        type="text"
-        placeholder="enter Drug name"
-
-        onChange={(event) => setDrug(event.target.value)}
-      />
-    </div>
-
-    <div className="input-box">
-      <span className="details">Expire</span>
-      <input
-        type="text"
-        placeholder="enter Drug expire "
-        onChange={(event) => setExpire(event.target.value)}
-      />
-    </div>
-
-    <div className="input-box">
-      <span className="details">Quantity</span>
-      <input
-        type="text"
-        placeholder="enter Drug quantity"
-        onChange={(event) => setQuantity(event.target.value)}
-      />
-    </div>
-
-   
-  </div>
-
-  <br />
-<br />
-<div className="button">
-  <input onClick={addRow} id="add" placeholder="list" />
-</div>
-
-<br />
-<br />
-<table id="table" border="1">
-  <thead id="table-head">
-    <tr>
-      <th>Drug name</th>
-      <th>Expire</th>
-      <th>Quantity</th>
-    </tr>
-  </thead>
-  <tbody id="table-body">
-    {/* {storedData.map(item=>
+        <br />
+        <br />
+        <table id="table" border="1">
+          <thead id="table-head">
+            <tr>
+              <th>Drug name</th>
+              <th>Expire</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody id="table-body">
+            {/* {storedData.map(item=>
     <tr key={item}>
       {item.map(col=>
       <td>{col}</td>)}
     </tr>)} */}
 
-{medData.map((item) => (
-<tr key={item.id}>
-<td>{item.medname}</td> 
-<td>{item.medexpire}</td>
-<td>{item.medquantity}</td>
-<td><button onClick={() => deletemed(item.id)}>X</button></td>
-</tr>
-))}
-    
-  </tbody>
-</table>
+            {/* {medData.map((item) => (
+              <tr key={item.id}>
+                <td>{item.medname}</td>
+                <td>{item.medexpire}</td>
+                <td>{item.medquantity}</td>
+                <td>
+                  <button onClick={() => deletemed(item.id)}>X</button>
+                </td>
+              </tr>
+            ))} */}
+          </tbody>
+        </table>
 
+        <div className="button">
+          <input type="submit" value="Add" />
+        </div>
+      </form>
+    </div>
+  );
 
+  function deletemed(id) {
+    // Filter out todo with the id
+    const newList = medData.filter((item) => item.id !== id);
 
-  <div className="button">
-    <input type="submit" value="Add" />
-  </div>
-</form>
-</div>
-);
+    setMedData(newList);
+  }
 
-function deletemed (id) {
-// Filter out todo with the id
-const newList = medData.filter((item) => item.id !== id);
+  function addRow() {
+    const medD = {
+      id: Math.random(),
+      medname: drug,
+      medexpire: expire,
+      medquantity: quantity,
+    };
 
-setMedData(newList);
-};
-
-function addRow() {
-
-const medD = {
-id: Math.random(),
-medname: drug,
-medexpire:expire,
-medquantity:quantity,
-}
-
-setMedData([...medData,medD]);
-}
+    setMedData([...medData, medD]);
+  }
 }

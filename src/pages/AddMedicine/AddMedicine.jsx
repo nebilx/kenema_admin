@@ -4,16 +4,14 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
 export default function AddMedicine() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [mid, setMid] = useState("");
   const [name, setName] = useState("");
   const [type, setType] = useState("");
   const [mfg, setMfg] = useState("");
   const [generic_name, setGeneric_name] = useState("");
-  const [date_mfg, setDate_mfg] = useState("");
   const [dosage, setDosage] = useState("");
-  const [date_expire, setDate_expire] = useState("");
   const [price, setPrice] = useState("");
   const [strength, setStrength] = useState("");
   const [unit, setUnit] = useState("");
@@ -36,9 +34,7 @@ export default function AddMedicine() {
   bodyFormData.append("type", type);
   bodyFormData.append("mfg", mfg);
   bodyFormData.append("generic_name", generic_name);
-  bodyFormData.append("date_mfg", date_mfg);
   bodyFormData.append("dosage", dosage);
-  bodyFormData.append("date_expire", date_expire);
   bodyFormData.append("price", price);
   bodyFormData.append("strength", strength);
   bodyFormData.append("unit", unit);
@@ -60,7 +56,6 @@ export default function AddMedicine() {
         setDatad(response.data.dosage.map((d) => d.dosage_name));
         setDatat(response.data.type.map((d) => d.type_name));
         setDatau(response.data.unit.map((d) => d.unit_name));
-
       } catch (err) {
         if (!err?.response) {
           setErrMsg("No Server Response");
@@ -92,7 +87,7 @@ export default function AddMedicine() {
       setIsLoading(false);
       setErrMsg("Added Successfully");
       console.log(JSON.stringify(response));
-       navigate("/listM?");
+      navigate("/listM?");
     } catch (err) {
       console.log(err);
       if (!err?.response) {
@@ -159,8 +154,9 @@ export default function AddMedicine() {
               id="active"
               required
               onChange={(event) =>
-                setType(event.target.options[event.target.selectedIndex].text)}>
-
+                setType(event.target.options[event.target.selectedIndex].text)
+              }
+            >
               <option value="item">Medicine Type</option>
               {datat && datat.map((m) => <option value="item">{m}</option>)}
             </select>
@@ -187,16 +183,6 @@ export default function AddMedicine() {
           </div>
 
           <div className="input-box">
-            <span className="details">Date Manufacture</span>
-            <input
-              type="text"
-              placeholder="enter name"
-              required
-              onChange={(event) => setDate_mfg(event.target.value)}
-            />
-          </div>
-
-          <div className="input-box">
             <span className="details">Dosage</span>
             <select
               className="ok"
@@ -204,21 +190,12 @@ export default function AddMedicine() {
               id="active"
               required
               onChange={(event) =>
-                setDosage(event.target.options[event.target.selectedIndex].text)}>
-
+                setDosage(event.target.options[event.target.selectedIndex].text)
+              }
+            >
               <option value="item">Medicine Dosage</option>
               {datad && datad.map((m) => <option value="item">{m}</option>)}
             </select>
-          </div>
-
-          <div className="input-box">
-            <span className="details">Date Expire</span>
-            <input
-              type="text"
-              placeholder="enter name"
-              required
-              onChange={(event) => setDate_expire(event.target.value)}
-            />
           </div>
 
           <div className="input-box">
@@ -242,7 +219,6 @@ export default function AddMedicine() {
           </div>
 
           <div className="input-box">
-
             <span className="details">Unit</span>
             <select
               className="ok"
@@ -267,8 +243,10 @@ export default function AddMedicine() {
               required
               onChange={(event) =>
                 setPackages(
-                  event.target.options[event.target.selectedIndex].text)}>
-
+                  event.target.options[event.target.selectedIndex].text
+                )
+              }
+            >
               <option value="item">Medicine Package</option>
               {datap && datap.map((m) => <option value="item">{m}</option>)}
             </select>
@@ -276,12 +254,6 @@ export default function AddMedicine() {
 
           <div className="input-box">
             <span className="details">Image</span>
-            {/* <input
-              type="text"
-              placeholder="enter name"
-              required
-              onChange={(event) => setImage(event.target.value)}
-            /> */}
 
             <input
               type="file"
@@ -293,12 +265,19 @@ export default function AddMedicine() {
 
           <div className="input-box">
             <span className="details">Status</span>
-            <input
-              type="text"
-              placeholder="enter status"
+            <select
+              className="ok"
+              name="active"
+              id="active"
               required
-              onChange={(event) => setStatus(event.target.value)}
-            />
+              onChange={(event) =>
+                setStatus(event.target.options[event.target.selectedIndex].text)
+              }
+            >
+              <option value="item">Status</option>
+              <option value="item">active</option>
+              <option value="item">Deactivate</option>
+            </select>
           </div>
         </div>
 

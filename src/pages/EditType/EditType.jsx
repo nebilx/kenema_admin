@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
 export default function EditType() {
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   const location = useLocation();
   const id = location.state;
   console.log(id);
@@ -19,12 +19,12 @@ export default function EditType() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/type", id);
+        const response = await axios.get(`http://localhost:4000/type/${id}`);
 
         console.log(response.data);
 
-        setTname(response.data[0].type_name);
-        setStatus(response.data[0].status);
+        setTname(response.data.type_name);
+        setStatus(response.data.status);
       } catch (err) {
         if (!err?.response) {
           setErrMsg("No Server Response");
@@ -39,7 +39,6 @@ export default function EditType() {
 
     fetchData();
   }, []);
-
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -108,14 +107,22 @@ export default function EditType() {
           </div>
 
           <div className="input-box">
-            <span className="details">Status</span>
-            <input
-              type="text"
-              placeholder="enter Address"
+            <span className="details">Status :</span>
+            <span className="details">{status}</span>
+            <br />
+            <select
+              className="ok"
+              name="active"
+              id="active"
               required
-              value={status}
-              onChange={(event) => setStatus(event.target.value)}
-            />
+              onChange={(event) =>
+                setStatus(event.target.options[event.target.selectedIndex].text)
+              }
+            >
+              <option value="item">Status</option>
+              <option value="item">active</option>
+              <option value="item">Deactivate</option>
+            </select>
           </div>
         </div>
 

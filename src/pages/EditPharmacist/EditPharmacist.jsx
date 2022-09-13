@@ -4,14 +4,14 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
 export default function EditPharmacist() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const location = useLocation();
   const id = location.state;
   console.log(id);
 
   const [name, setName] = useState("");
-  const [p_pwd,setP_pwd] = useState("");
-  const [image,setImage] = useState("");
+  const [p_pwd, setP_pwd] = useState("");
+  const [image, setImage] = useState("");
   const [status, setStatus] = useState("");
 
   const [errMsg, setErrMsg] = useState("");
@@ -28,14 +28,14 @@ export default function EditPharmacist() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:4000/pharmacist/${id}`);
-
+        const response = await axios.get(
+          `http://localhost:4000/pharmacist/${id}`
+        );
 
         setName(response.data.name);
         setP_pwd(response.data.p_pwd);
         setImage(response.data.image.url);
         setStatus(response.data.status);
-
       } catch (err) {
         if (!err?.response) {
           setErrMsg("No Server Response");
@@ -69,7 +69,7 @@ export default function EditPharmacist() {
       setIsLoading(false);
       setErrMsg("Updated Successfully");
       console.log(JSON.stringify(response));
-        navigate("/listPh?");
+      navigate("/listPh?");
     } catch (err) {
       console.log(err);
       if (!err?.response) {
@@ -132,7 +132,7 @@ export default function EditPharmacist() {
 
           <div className="input-box">
             <span className="details">Photo Image</span>
-            <img src={image}  width="50" height="50"/>
+            <img src={image} width="50" height="50" />
             <input
               type="file"
               id="file"
@@ -142,14 +142,22 @@ export default function EditPharmacist() {
           </div>
 
           <div className="input-box">
-            <span className="details">Status</span>
-            <input
-              type="text"
-              placeholder="enter status"
+            <span className="details">Status :</span>
+            <span className="details">{status}</span>
+            <br />
+            <select
+              className="ok"
+              name="active"
+              id="active"
               required
-              value={status}
-              onChange={(event) => setStatus(event.target.value)}
-            />
+              onChange={(event) =>
+                setStatus(event.target.options[event.target.selectedIndex].text)
+              }
+            >
+              <option value="item">Status</option>
+              <option value="item">active</option>
+              <option value="item">Deactivate</option>
+            </select>
           </div>
         </div>
 

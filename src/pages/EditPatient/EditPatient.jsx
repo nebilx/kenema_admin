@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
 export default function EditPatient() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const location = useLocation();
   const id = location.state;
   console.log(id);
@@ -52,27 +52,26 @@ export default function EditPatient() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/patient", id);
+        const response = await axios.get(`http://localhost:4000/patient/${id}`);
 
         console.log(response.data);
 
-        setName(response.data[0].name);
-        setAge(response.data[0].age);
-        setGender(response.data[0].gender);
-        setDob(response.data[0].dob);
-        setPno(response.data[0].pno);
-        setImage(response.data[0].p_image.url);
-        setCity(response.data[0].address[0].city);
-        setSub_city(response.data[0].address[0].sub_city);
-        setWoreda(response.data[0].address[0].woreda);
-        setHouse_no(response.data[0].address[0].house_no);
-        setI_id(response.data[0].insurance[0].insurance_id);
-        setI_name(response.data[0].insurance[0].insurance_name);
-        setI_image(response.data[0].insurance[0].insurance_image.url);
-        setU_name(response.data[0].user[0].user_name);
-        setU_pwd(response.data[0].user[0].user_pwd);
-
-        setStatus(response.data[0].user[0].status);
+        setName(response.data.name);
+        setAge(response.data.age);
+        setGender(response.data.gender);
+        setDob(response.data.dob);
+        setPno(response.data.pno);
+        setImage(response.data.p_image.url);
+        setCity(response.data.address[0].city);
+        setSub_city(response.data.address[0].sub_city);
+        setWoreda(response.data.address[0].woreda);
+        setHouse_no(response.data.address[0].house_no);
+        setI_id(response.data.insurance[0].insurance_id);
+        setI_name(response.data.insurance[0].insurance_name);
+        setI_image(response.data.insurance[0].insurance_image.url);
+        setU_name(response.data.user[0].user_name);
+        setU_pwd(response.data.user[0].user_pwd);
+        setStatus(response.data.user[0].status);
       } catch (err) {
         if (!err?.response) {
           setErrMsg("No Server Response");
@@ -105,7 +104,7 @@ export default function EditPatient() {
       setIsLoading(false);
       setErrMsg("Updated Successfully");
       console.log(JSON.stringify(response));
-        navigate("/listPa?");
+      navigate("/listPa?");
     } catch (err) {
       console.log(err);
       if (!err?.response) {
@@ -168,13 +167,20 @@ export default function EditPatient() {
 
           <div className="input-box">
             <span className="details">Gender</span>
-            <input
-              type="text"
-              placeholder="enter gender"
+            <span className="details">{gender}</span>
+            <select
+              className="ok"
+              name="active"
+              id="active"
               required
-              value={gender}
-              onChange={(event) => setGender(event.target.value)}
-            />
+              onChange={(event) =>
+                setGender(event.target.options[event.target.selectedIndex].text)
+              }
+            >
+              <option value="item">Gender</option>
+              <option value="item">Male</option>
+              <option value="item">Female</option>
+            </select>
           </div>
 
           <div className="input-box">
@@ -201,8 +207,8 @@ export default function EditPatient() {
 
           <div className="input-box">
             <span className="details">Photo Image</span>
-            <br/>
-            <img src={image}  width="30" height="30"></img>
+            <br />
+            <img src={image} width="30" height="30"></img>
             <input
               type="file"
               id="file"
@@ -279,8 +285,8 @@ export default function EditPatient() {
 
           <div className="input-box">
             <span className="details">Insurance Image</span>
-            <br/>
-            <img src={i_image}  width="30" height="30"></img>
+            <br />
+            <img src={i_image} width="30" height="30"></img>
             <input
               type="file"
               id="file"
@@ -312,14 +318,22 @@ export default function EditPatient() {
           </div>
 
           <div className="input-box">
-            <span className="details">Status</span>
-            <input
-              type="text"
-              placeholder="enter name"
+            <span className="details">Status :</span>
+            <span className="details">{status}</span>
+            <br />
+            <select
+              className="ok"
+              name="active"
+              id="active"
               required
-              value={status}
-              onChange={(event) => setStatus(event.target.value)}
-            />
+              onChange={(event) =>
+                setStatus(event.target.options[event.target.selectedIndex].text)
+              }
+            >
+              <option value="item">Status</option>
+              <option value="item">active</option>
+              <option value="item">Deactivate</option>
+            </select>
           </div>
         </div>
 

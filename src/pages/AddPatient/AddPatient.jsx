@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
 export default function NewPatient() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
@@ -62,7 +62,7 @@ export default function NewPatient() {
       setIsLoading(false);
       setErrMsg("Added Successfully");
       console.log(JSON.stringify(response));
-         navigate("/listPa?");
+      navigate("/listPa?");
     } catch (err) {
       console.log(err);
       if (!err?.response) {
@@ -123,12 +123,19 @@ export default function NewPatient() {
 
           <div className="input-box">
             <span className="details">Gender</span>
-            <input
-              type="text"
-              placeholder="enter gender"
+            <select
+              className="ok"
+              name="active"
+              id="active"
               required
-              onChange={(event) => setGender(event.target.value)}
-            />
+              onChange={(event) =>
+                setGender(event.target.options[event.target.selectedIndex].text)
+              }
+            >
+              <option value="item">Gender</option>
+              <option value="item">Male</option>
+              <option value="item">Female</option>
+            </select>
           </div>
 
           <div className="input-box">
@@ -153,12 +160,6 @@ export default function NewPatient() {
 
           <div className="input-box">
             <span className="details">Photo Image</span>
-            {/* <input
-              type="text"
-              placeholder="enter name"
-              required
-              onChange={(event) => setImage(event.target.value)}
-            /> */}
 
             <input
               type="file"
@@ -268,12 +269,19 @@ export default function NewPatient() {
 
           <div className="input-box">
             <span className="details">Status</span>
-            <input
-              type="text"
-              placeholder="enter name"
+            <select
+              className="ok"
+              name="active"
+              id="active"
               required
-              onChange={(event) => setStatus(event.target.value)}
-            />
+              onChange={(event) =>
+                setStatus(event.target.options[event.target.selectedIndex].text)
+              }
+            >
+              <option value="item">Status</option>
+              <option value="item">active</option>
+              <option value="item">Deactivate</option>
+            </select>
           </div>
         </div>
 

@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 // import { Stack, Form,  } from "react-bootstrap";
 export default function EditDosage() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const location = useLocation();
   const id = location.state;
   console.log(id);
@@ -19,10 +19,10 @@ export default function EditDosage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/dosage", id);
+        const response = await axios.get(`http://localhost:4000/dosage/${id}`);
 
-        setDname(response.data[0].dosage_name);
-        setStatus(response.data[0].status);
+        setDname(response.data.dosage_name);
+        setStatus(response.data.status);
       } catch (err) {
         if (!err?.response) {
           setErrMsg("No Server Response");
@@ -54,7 +54,7 @@ export default function EditDosage() {
       setIsLoading(false);
       setErrMsg("Updated Successfully");
       console.log(JSON.stringify(response));
-        navigate("/listD?");
+      navigate("/listD?");
     } catch (err) {
       console.log(err);
       if (!err?.response) {
@@ -105,14 +105,22 @@ export default function EditDosage() {
           </div>
 
           <div className="input-box">
-            <span className="details">Status</span>
-            <input
-              type="text"
-              placeholder="enter Address"
+            <span className="details">Status :</span>
+            <span className="details">{status}</span>
+            <br />
+            <select
+              className="ok"
+              name="active"
+              id="active"
               required
-              value={status}
-              onChange={(event) => setStatus(event.target.value)}
-            />
+              onChange={(event) =>
+                setStatus(event.target.options[event.target.selectedIndex].text)
+              }
+            >
+              <option value="item">Status</option>
+              <option value="item">active</option>
+              <option value="item">Deactivate</option>
+            </select>
           </div>
         </div>
 

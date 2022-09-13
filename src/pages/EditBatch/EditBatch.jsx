@@ -19,13 +19,10 @@ export default function EditBatch() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:4000/medicine_Batch",
-          id
-        );
+        const response = await axios.get(`http://localhost:4000/batch/${id}`);
 
-        setBname(response.data[0].drug_expire);
-        setStatus(response.data[0].drug_quantity);
+        setBname(response.data.drug_expire);
+        setStatus(response.data.drug_quantity);
       } catch (err) {
         if (!err?.response) {
           setErrMsg("No Server Response");
