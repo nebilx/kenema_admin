@@ -112,7 +112,7 @@ export default function ListBranch() {
                   </td>
                   <td>
                     {" "}
-                    <Link to="/editB" state={data._id}>
+                    <Link to="/editBa" state={data._id}>
                       <button> Edit</button>
                     </Link>
                   </td>

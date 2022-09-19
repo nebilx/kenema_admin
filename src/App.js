@@ -9,6 +9,7 @@ import { Reports, ReportsOne, ReportsTwo, ReportsThree } from "./pages/Reports";
 import AddBatch from "./pages/AddBatch/AddBatch";
 import ListBatch from "./pages/ListBatch/ListBatch";
 import ViewBatch from "./pages/ViewBatch/ViewBatch";
+import EditBatch from "./pages/EditBatch/EditBatch";
 
 import AddPrescription from "./pages/AddPrescription/AddPrescription";
 
@@ -53,7 +54,7 @@ function App() {
         <Route path="/addBa" exact element={<AddBatch />} />
         <Route path="/listBa" exact element={<ListBatch />} />
         <Route path="/viewBa" exact element={<ViewBatch />} />
-        {/* <Route path="/editT" exact element={<EditType />} /> */}
+        <Route path="/editBa" exact element={<EditBatch />} />
 
         <Route path="/addPr" exact element={<AddPrescription />} />
         {/* <Route path="/listPr" exact element={<ListBatch />} /> */}

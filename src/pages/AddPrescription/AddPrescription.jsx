@@ -95,9 +95,9 @@ export default function Xtest() {
       setIsLoading(false);
     };
 
-    const fetchMData = async () => {
+    const fetchBData = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/medicine", {
+        const response = await axios.get("http://localhost:4000/batch", {
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + localStorage.getItem("token"),
@@ -119,7 +119,7 @@ export default function Xtest() {
     };
 
     fetchPData();
-    fetchMData();
+    fetchBData();
   }, []);
 
   useEffect(() => {
@@ -158,6 +158,41 @@ export default function Xtest() {
 
     fetchPData();
   }, [patient]);
+
+  useEffect(() => {
+    const fetchSMData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:4000/medicine/${medicine}`
+        );
+
+        console.log(response.data);
+
+        // setMid(response.data.medicine_id);
+        // setName(response.data.name);
+        // setType(response.data.type);
+        // setMfg(response.data.mfg);
+        // setGeneric_name(response.data.generic_name);
+        // setDosage(response.data.dosage);
+        // setPrice(response.data.price);
+        // setStrength(response.data.strength);
+        // setUnit(response.data.unit);
+        // setPackages(response.data.package);
+        // setImage(response.data.image.url);
+        // setStatus(response.data.status);
+      } catch (err) {
+        if (!err?.response) {
+          setErrMsg("No Server Response");
+        } else if (err.response?.status === 400) {
+          setErrMsg("Missing ");
+        } else {
+          setErrMsg("Failed to Get data");
+        }
+      }
+      setIsLoading(false);
+    };
+    fetchSMData();
+  }, [medicine]);
 
   return (
     <div>
@@ -206,6 +241,7 @@ export default function Xtest() {
           {mdata && mdata.map((m) => <option value="item">{m.name}</option>)}
         </select>
       </div>
+
       <form onSubmit={handleSubmit}>
         <div className="input-box">
           <span className="details">Date</span>
@@ -214,35 +250,6 @@ export default function Xtest() {
             placeholder="enter date"
             onChange={(event) => setDate(event.target.value)}
           />
-        </div>
-
-        <div className="branch-detail">
-          <div className="input-box">
-            <span className="details">Name</span>
-            <input
-              type="text"
-              placeholder="enter Drug name"
-              onChange={(event) => setDrug(event.target.value)}
-            />
-          </div>
-
-          <div className="input-box">
-            <span className="details">Expire</span>
-            <input
-              type="text"
-              placeholder="enter Drug expire "
-              onChange={(event) => setExpire(event.target.value)}
-            />
-          </div>
-
-          <div className="input-box">
-            <span className="details">Quantity</span>
-            <input
-              type="text"
-              placeholder="enter Drug quantity"
-              onChange={(event) => setQuantity(event.target.value)}
-            />
-          </div>
         </div>
 
         <br />

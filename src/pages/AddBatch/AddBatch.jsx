@@ -198,6 +198,7 @@ export default function AddBatch() {
           <span className="details">med unit : {unit}</span> <br />
           <span className="details">med package : {packages}</span> <br />
           <img src={image} width="30" height="30"></img> <br />
+          
           <div className="input-box">
             <span className="details">Quantity</span>
             <input
